@@ -9,8 +9,17 @@ import Login from './components/Login';
 import Post from './components/Post';
 import User from './components/User';
 import Signup from './components/Createaccount';
+import CV from './components/cvbuilder';
+import React from "react";
 
 function App() {
+  const [data, setData] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch("/api")
+      .then((res) => res.json())
+      .then((data) => setData(data.message));
+  }, []);
   return (
     <div className="App">
     <BrowserRouter>
@@ -25,8 +34,11 @@ function App() {
     <Route path='/user' element={<User/>}/>
     <Route path='/signup' element={<Signup/>}/>
     <Route path='/resume' element={<Resume/>}/>
+    <Route path='/cv' element={<CV/>}/>
+    
     </Routes>
     </BrowserRouter>
+    <p>{!data ? "Loading..." : data}</p>
   </div>
   );
 }
