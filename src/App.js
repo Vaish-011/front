@@ -9,6 +9,7 @@ import Login from './components/Login/login.jsx';
 import Post from './components/Post';
 import User from './components/User';
 import CV from './components/cvbuilder';
+import Tasklist from './components/Tasklist';
 import React from "react";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
     <Route path='/user' element={<User/>}/>
     <Route path='/resume' element={<Resume/>}/>
     <Route path='/cv' element={<CV/>}/>
+    <Route path='/tasklist' element={<Tasklist/>}/>
     
     </Routes>
     </BrowserRouter>

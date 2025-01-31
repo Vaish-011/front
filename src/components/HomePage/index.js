@@ -28,6 +28,9 @@ function HomePage() {
   const handlecvButtonClick = () => {
     navigate("/cv");
   };
+  const handleTasklistButtonClick =()=>{
+    navigate("/tasklist");
+  }
 
 
   return (
@@ -40,6 +43,7 @@ function HomePage() {
       <button onClick={handlechatButtonClick}>chat Page</button>
       <button onClick={handleAIresumebuilderButtonClick}>AIresumebuilderPage</button>
       <button onClick={handlecvButtonClick}>CVBUILDER PAGE</button>
+      <button onClick={handleTasklistButtonClick}>Tasklist Page</button>
     </div>
   );
 }
