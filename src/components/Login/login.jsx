@@ -46,11 +46,11 @@ function Login() {
                  <form action="">
                      <h1>Create Account</h1>
                      <div className='input-box'>
-                         <input type="FirstName" placeholder='FirstName' required/>
+                         <input type="First Name" placeholder='FirstName' required/>
                          <FaUserAlt className='icon'/>
                      </div>
                      <div className='input-box'>
-                         <input type="LastName" placeholder='LastName' />
+                         <input type="Last Name" placeholder='LastName' />
                          <FaUserAlt className='icon'/>
                      </div>
                      <div className='input-box'>

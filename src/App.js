@@ -8,7 +8,6 @@ import Chat from './components/chats';
 import Login from './components/Login/login.jsx';
 import Post from './components/Post';
 import User from './components/User';
-import Signup from './components/Createaccount/createaccount.jsx';
 import CV from './components/cvbuilder';
 import React from "react";
 
@@ -25,7 +24,6 @@ function App() {
     <Route path='/chat' element={<Chat/>}/>
     <Route path='/login' element={<Login/>}/>
     <Route path='/user' element={<User/>}/>
-    <Route path='/signup' element={<Signup/>}/>
     <Route path='/resume' element={<Resume/>}/>
     <Route path='/cv' element={<CV/>}/>
     
