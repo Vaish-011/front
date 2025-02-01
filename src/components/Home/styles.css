@@ -1,0 +1,170 @@
+/* Ensure full height for the entire page */
+
+
+/* Updated .HomePage styling */
+.HomePage {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #0c0a0a; /* Dark background */
+  color: #e0e0e0; /* Light text */
+  width: 100%;
+  height: 100%; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Styling */
+.headerHome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  margin-bottom: 20px;
+  position: absolute;
+  top:0%;
+  width: 100%;
+  left:0;
+}
+
+/* Tooltip styling */
+.icon-container {
+  position: relative;
+  display: inline-block;
+  margin-right: 20px; /* Increase space between icons */
+  width: 50px; /* Adjust width */
+  height: 50px; /* Adjust height */
+}
+
+.icon-container:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+
+
+/* Logo */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #bb86fc; /* Soft purple text */
+  letter-spacing: 1px;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.2),
+              inset 0 -4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.search-bar:hover {
+  box-shadow: inset 0 6px 8px rgba(255, 255, 255, 0.3),
+              inset 0 -6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.search-icon {
+  color: #bb86fc;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.input-3d {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: #e0e0e0;
+  width: 200px;
+}
+
+/* Navigation Icons */
+.nav-icons {
+  display: flex;
+  gap: 20px;
+}
+
+.icon-3d {
+  font-size: 48px;
+  color: #bb86fc;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.icon-3d:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Layout Sections */
+.feed, .widgets {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 10px;
+  border-radius: 8px;
+}
+
+.sidebar {
+  width: 30%;
+}
+
+.feed {
+  width: 50%;
+}
+
+.widgets {
+  width: 25%;
+}
+
+.app-body {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1; /* Ensure that app-body takes up remaining space */
+  padding: 20px;
+  flex-wrap: wrap; /* Ensure content wraps on smaller screens */
+}
+
+/* Profile Picture */
+.profile-pic {
+  border-radius: 50%;
+  width: 80px;
+}
+
+/* List Styling */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
