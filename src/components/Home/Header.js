@@ -31,7 +31,7 @@ function Header() {
           {/* Add Post Icon */}
           <div className="icon-container" title="Add Post">
             <FaPlus className="icon-3d" />
-          </div>
+          </div>  
           <div className="icon-container" title="Home">
             <FaHome className="icon-3d" />
           </div>
