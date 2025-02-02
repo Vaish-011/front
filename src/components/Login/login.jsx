@@ -4,7 +4,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { IoMdLock } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import {useNavigate} from "react-router-dom";
-
+import home from '../Home/index'
 
 function Login() {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ function Login() {
                 localStorage.setItem("user", JSON.stringify({ id: data.userId, name: data.name }));
 
                 // Redirect to Post page
-                navigate("/post");
+                navigate("/home");
             } else {
                 alert(data.message); // Fix: Show proper error message
             }
