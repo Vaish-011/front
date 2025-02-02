@@ -43,6 +43,7 @@ function HomePage() {
       <button onClick={handleAIresumebuilderButtonClick}>AIresumebuilderPage</button>
       <button onClick={handlecvButtonClick}>CVBUILDER PAGE</button>
       <button onClick={handleFeedbackButtonClick}>Feedback Page</button>
+      <button onClick={handleTasklistButtonClick}>TasklistPage</button>
     </div>
   );
 }
