@@ -1,38 +1,56 @@
-import { FaImage, FaVideo, FaCalendarAlt, FaEdit } from "react-icons/fa";
-import axios from 'axios';
 import { useEffect, useState } from "react";
+import { FaImage, FaVideo, FaCalendarAlt, FaEdit } from "react-icons/fa";
+import axios from "axios";
 
 const Post = () => {
     const [content, setContent] = useState("");
     const [posts, setPosts] = useState([]);
-    const [userId, setUserId] = useState(null); // Store the logged-in user ID
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState("");
 
-    // Fetch User ID from Local Storage or Session after Login
+    // Fetch User from Local Storage
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
-        if (storedUser) {
-            setUserId(storedUser.id);
+        const storedToken = localStorage.getItem("token");
+
+        if (storedUser && storedToken) {
+            setUser(storedUser);
+            setToken(storedToken);
         }
     }, []);
 
     // Fetch Posts
     useEffect(() => {
         axios.get("http://localhost:5000/api/posts/post")
-            .then((response) => setPosts(response.data))
-            .catch((error) => console.error("Error fetching data", error));
+            .then(response => setPosts(response.data))
+            .catch(error => console.error("Error fetching posts:", error));
     }, []);
 
     // Handle Post Submission
-    const handlePostSubmit = () => {
-        if (!content.trim() || !userId) return alert("Please log in first.");
-        
-        axios.post("http://localhost:5000/api/posts/post", { content, userId }, { withCredentials: true })
-            .then(() => {
-                setContent("");
-                return axios.get("http://localhost:5000/api/posts/post");
-            })
-            .then((response) => setPosts(response.data))
-            .catch((error) => console.error("Error posting content", error));
+    const handlePostSubmit = async () => {
+        if (!content.trim()) {
+            alert("Post content cannot be empty.");
+            return;
+        }
+        if (!token) {
+            alert("Please log in first.");
+            return;
+        }
+
+        try {
+            await axios.post("http://localhost:5000/api/posts/post",
+                { content },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            // Fetch updated posts
+            const response = await axios.get("http://localhost:5000/api/posts/post");
+            setPosts(response.data);
+            setContent("");
+        } catch (error) {
+            console.error("Error posting content:", error.response?.data || error.message);
+            alert("Failed to create post!");
+        }
     };
 
     return (
