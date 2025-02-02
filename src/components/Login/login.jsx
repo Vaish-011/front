@@ -3,8 +3,11 @@ import './Logincreateaccount.css';
 import { FaUserAlt } from "react-icons/fa";
 import { IoMdLock } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
+import {useNavigate} from "react-router-dom";
+
 
 function Login() {
+    const navigate = useNavigate();
     const [action, setAction] = useState('');
     const [loginData, setLoginData] = useState({ email: '', password: '' });
     const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
@@ -27,8 +30,14 @@ function Login() {
             });
             const data = await response.json();
             if (response.ok) {
-                alert('Login Successful');
-                localStorage.setItem('token', data.token);
+                alert("Login Successful");
+
+                // Store user info in localStorage
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify({ id: data.userId, name: data.name }));
+
+                // Redirect to Post page
+                navigate("/post");
             } else {
                 alert(data.message); // Fix: Show proper error message
             }
