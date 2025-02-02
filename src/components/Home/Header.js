@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { FaSearch,FaHome, FaUserFriends, FaSuitcase, FaBell, FaComment, FaBars ,FaPlus } from "react-icons/fa";
 import Sidebar from "./Sidebar";
 import "./styles.css";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev); 
@@ -28,8 +30,7 @@ function Header() {
         </div>
 
         <div className="nav-icons">
-          {/* Add Post Icon */}
-          <div className="icon-container" title="Add Post">
+          <div className="icon-container" title="Add Post" onClick={()=>navigate('/post')}>
             <FaPlus className="icon-3d" />
           </div>  
           <div className="icon-container" title="Home">
@@ -44,7 +45,7 @@ function Header() {
           <div className="icon-container" title="Notifications">
             <FaBell className="icon-3d" />
           </div>
-          <div className="icon-container" title="Messages">
+          <div className="icon-container" title="Messages" onClick={()=>navigate('/chat')}>
             <FaComment className="icon-3d" />
           </div>
           

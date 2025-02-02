@@ -7,8 +7,7 @@ import "./styles.css";
 
 const home = ()=>{
     return(
-       
-        <div className="Homepage">
+         <div className="Homepage">
           <Header />
           <div className="app-body">
           <Sidebar />
