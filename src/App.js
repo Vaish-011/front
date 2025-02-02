@@ -10,6 +10,7 @@ import Post from './components/Post';
 import User from './components/User';
 import CV from './components/cvbuilder';
 import Tasklist from './components/Tasklist';
+import Feedback from './components/Feedback/index.js';
 import React from "react";
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
     <Route path='/resume' element={<Resume/>}/>
     <Route path='/cv' element={<CV/>}/>
     <Route path='/tasklist' element={<Tasklist/>}/>
-    
+    <Route path='/feedback' element={<Feedback/>}/>
     </Routes>
     </BrowserRouter>
   </div>
