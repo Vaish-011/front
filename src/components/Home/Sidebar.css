@@ -1,0 +1,106 @@
+/* Sidebar Container */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px; /* Sidebar hidden initially */
+  width: 500px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9); /* Dark background for contrast */
+  color: #fff; /* White text color for better visibility */
+  transition: transform 0.3s ease-in-out; /* Smooth transition */
+  transform: translateX(-100%); /* Initially hidden */
+  padding-top: 60px; /* Add space from top */
+  z-index: 10;
+  border-right: 2px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+}
+
+/* Sidebar open state */
+.sidebar.open {
+  transform: translateX(0); /* Show the sidebar */
+  
+}
+
+/* Sidebar close state */
+.sidebar.closed {
+  transform: translateX(-100%); /* Hide the sidebar completely */
+}
+
+/* Sidebar Close Button */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
+  color: rgb(158, 31, 243); /* Close button color */
+  cursor: pointer;
+}
+
+/* Sidebar Menu Items */
+.sidebar ul {
+  position: absolute;
+  right: 20px;
+  font-size: 30px;/* Close button color */
+  cursor: pointer;
+}
+
+.sidebar ul li {
+  display: flex;
+  align-items: center;
+  padding: 20px 30px;
+  font-size: 18px;
+  transition: background 0.3s ease-in-out;
+  cursor: pointer;
+  color: rgb(255, 255, 255); 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border between items */
+}
+
+/* Hover Effect on Sidebar Items */
+.sidebar ul li:hover {
+  background: rgba(255, 255, 255, 0.2); /* Light hover effect */
+  border-radius: 5px;
+}
+
+/* Sidebar Icons */
+.sidebar ul li svg {
+  color: rgb(236, 235, 243); /* White color for icons */
+  margin-right: 15px;
+  font-size: 22px; /* Larger icons for better visibility */
+}
+
+/* Sidebar Item Links */
+.sidebar ul li a {
+  color: #fff; /* Ensure the text color of the link is white */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Hover Effect for Links */
+.sidebar ul li a:hover {
+  color: #a600ff; /* Yellow color on hover */
+}
+
+/* Sidebar Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 250px; /* Adjust width for mobile */
+  }
+
+  .sidebar ul li {
+    font-size: 16px; /* Smaller text */
+    padding: 15px 20px;
+  }
+}
+

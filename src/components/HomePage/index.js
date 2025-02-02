@@ -31,6 +31,9 @@ function HomePage() {
   const handleTasklistButtonClick =()=>{
     navigate("/tasklist");
   }
+  const handleFeedbackButtonClick =()=>{
+    navigate("/feedback");
+  }
 
 
   return (
@@ -43,7 +46,7 @@ function HomePage() {
       <button onClick={handlechatButtonClick}>chat Page</button>
       <button onClick={handleAIresumebuilderButtonClick}>AIresumebuilderPage</button>
       <button onClick={handlecvButtonClick}>CVBUILDER PAGE</button>
-      <button onClick={handleTasklistButtonClick}>Tasklist Page</button>
+      <button onClick={handleFeedbackButtonClick}>Feedback Page</button>
     </div>
   );
 }
