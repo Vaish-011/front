@@ -1,0 +1,157 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #181818; /* Dark background color */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #eaeaea; /* Light text color */
+}
+
+/* Task Home Container */
+.task-home {
+  display: flex;
+  justify-content: space-between;
+  background-color: #2c2c2c; /* Darker background for the card */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow for contrast */
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background-color: #333; /* Dark sidebar background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Shadow for sidebar */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-search input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #333;
+  color: #eaeaea;
+  width: 100%;
+}
+
+.sidebar-search input:focus {
+  border-color: #4e8ef7;
+  outline: none;
+}
+
+.sidebar-item {
+  padding: 10px;
+  background-color: #444; /* Darker background for items */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sidebar-item:hover {
+  background-color: #4e8ef7; /* Blue hover effect */
+}
+
+.sidebar-item.active {
+  background-color: #4e8ef7; /* Active item background */
+}
+
+/* Task Content */
+.task-content {
+  width: 100%;
+  max-width: 800px;
+  margin-left: 30px;
+}
+
+.task-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Input Field Styling */
+.task-input-field {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #444; /* Dark border */
+  border-radius: 4px;
+  background-color: #333; /* Dark background */
+  color: #eaeaea; /* Light text inside input */
+  transition: border-color 0.3s;
+}
+
+.task-input-field:focus {
+  border-color: #4e8ef7; /* Blue border on focus */
+  outline: none;
+}
+
+/* Button Styling */
+.task-input button {
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #4e8ef7; /* Blue button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.task-input button:hover {
+  background-color: #3b7dcb; /* Darker blue on hover */
+}
+
+/* Task List Styling */
+.task-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Task Item Styling */
+.task-item {
+  background-color: #333; /* Dark background for tasks */
+  padding: 10px;
+  border: 1px solid #444; /* Dark border */
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-item:nth-child(even) {
+  background-color: #2c2c2c; /* Slightly darker background for even items */
+}
+
+/* Task Status Styling */
+.task-status {
+  font-size: 12px;
+  color: #4e8ef7; /* Blue for task status */
+  margin-left: 10px;
+}
+
+/* Delete Button Styling */
+.task-item button {
+  background: none;
+  border: none;
+  color: #e74c3c; /* Red for delete button */
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.task-item button:hover {
+  color: #c0392b; /* Darker red on hover */
+}

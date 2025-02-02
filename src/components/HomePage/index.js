@@ -13,9 +13,6 @@ function HomePage() {
   const handleLoginButtonClick = () => {
     navigate("/login");
   };
-  const handleCreateaccountButtonClick = () => {
-    navigate("/signup");
-  };
   const handleuserButtonClick = () => {
     navigate("/user");
   };
@@ -37,7 +34,6 @@ function HomePage() {
     <div>
       <button onClick={handleHomeButtonClick}>Home Page</button>
       <button onClick={handlePostButtonClick}>Post Page</button>
-      <button onClick={handleCreateaccountButtonClick}>Createaccount</button>
       <button onClick={handleLoginButtonClick}>Login</button>
       <button onClick={handleuserButtonClick}>userPage</button>
       <button onClick={handlechatButtonClick}>chat Page</button>
