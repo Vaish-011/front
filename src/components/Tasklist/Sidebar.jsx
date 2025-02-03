@@ -18,6 +18,10 @@ function Sidebar({onInboxClick}) {
       </div>
 
       <nav className='nav-menu'>
+      <div className='toggle-icon' onClick={toggleSideBar}>
+         <PiSidebarSimpleBold className='icon' />
+      </div>
+
       <div className='nav-item'>
         <FaBell className='icon'/> Notification
       </div>
