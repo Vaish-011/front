@@ -17,6 +17,8 @@ const Post = () => {
             setUser(storedUser);
             setToken(storedToken);
         }
+
+        console.log("Stored User:", storedUser); // Debugging step
     }, []);
 
     // Fetch Posts
@@ -32,14 +34,14 @@ const Post = () => {
             alert("Post content cannot be empty.");
             return;
         }
-        if (!token) {
+        if (!token || !user) {
             alert("Please log in first.");
             return;
         }
 
         try {
             await axios.post("http://localhost:5000/api/posts/post",
-                { content },
+                { content, userId: user.id },  // Include userId in the request
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -77,16 +79,6 @@ const Post = () => {
             </div>
 
             <button className="post-button" onClick={handlePostSubmit}>Post</button>
-
-            <h2>Posts</h2>
-            <ul>
-                {posts.map((post) => (
-                    <li key={post.id}>
-                        <strong>{post.name}</strong> - {new Date(post.createdAt).toLocaleString()}
-                        <p>{post.content}</p>
-                    </li>
-                ))}
-            </ul>
         </div>
     );
 };
