@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import './sidebar.css';
-import Taskhome from "./Taskhome";
+import Taskhome from './Taskhome'
 
 const Home = () => {
   return (
