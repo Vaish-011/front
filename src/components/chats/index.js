@@ -1,52 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsEmojiSmile, BsPaperclip, BsSend, BsSearch, BsThreeDotsVertical, BsCheck2All } from "react-icons/bs";
+import SearchUsers from "./SearchUsers"; // Importing the SearchUsers component
 
 const Chat = () => {
-  const [selectedChat, setSelectedChat] = useState(0);
-  const [message, setMessage] = useState("");
+  const [selectedChat, setSelectedChat] = useState(null); // Store the selected user's chat
+  const [message, setMessage] = useState(""); // Store the current message
+  const [contacts, setContacts] = useState([]); // Store the list of contacts
+  const [messages, setMessages] = useState([]); // Store messages of the selected chat
 
-  const contacts = [
-    {
-      id: 0,
-      name: "John Smith",
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
-      lastMessage: "See you tomorrow!",
-      timestamp: "10:30 AM",
-      unread: 2,
-      online: true
-    },
-    {
-      id: 1,
-      name: "Sarah Wilson",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-      lastMessage: "Thanks for your help!",
-      timestamp: "9:45 AM",
-      unread: 0,
-      online: false
-    }
-  ];
+//   useEffect(() => {
+//     // Fetch contacts from backend (replace with your actual API endpoint)
+//     fetch("http://localhost:5000/api/chat/contacts")
+//       .then((res) => res.json())
+//       .then((data) => setContacts(data))
+//       .catch((err) => console.error("Error fetching contacts:", err));
+//   }, []);
 
-  const messages = [
-    {
-      id: 1,
-      sender: 0,
-      text: "Hi there! How are you?",
-      timestamp: "10:00 AM",
-      status: "read"
-    },
-    {
-      id: 2,
-      sender: "me",
-      text: "I'm good, thanks! How about you?",
-      timestamp: "10:02 AM",
-      status: "read"
+  useEffect(() => {
+    if (selectedChat !== null) {
+      // Fetch messages for the selected chat (replace with your actual API endpoint)
+      fetch(`http://localhost:5000/api/chat/messages/${selectedChat}`)
+        .then((res) => res.json())
+        .then((data) => setMessages(data))
+        .catch((err) => console.error("Error fetching messages:", err));
     }
-  ];
+  }, [selectedChat]);
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      setMessage("");
+      // Send the message (replace with your actual API endpoint)
+      fetch(`http://localhost:5000/api/chat/send/${selectedChat}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message.trim() }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setMessages((prevMessages) => [...prevMessages, data]); // Add new message to chat
+          setMessage(""); // Clear input field
+        })
+        .catch((err) => console.error("Error sending message:", err));
     }
+  };
+
+  const handleSelectUser = (user) => {
+    setSelectedChat(user.id); // Set selected chat
   };
 
   return (
@@ -55,12 +53,7 @@ const Chat = () => {
       <div className="w-1/4 min-w-[300px] bg-transparent border-r border-gray-700">
         <div className="p-4 border-b border-gray-700">
           <div className="relative">
-            <input
-              type="text"
-              placeholder="Search contacts..."
-              className="w-full px-4 py-2 bg-[#112240] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-[0_0_10px_rgba(0,0,255,0.5)] transition"
-            />
-            <BsSearch className="absolute right-3 top-3 text-gray-400" />
+            <SearchUsers onSelectUser={handleSelectUser} /> {/* Integrate the SearchUsers component */}
           </div>
         </div>
         <div className="overflow-y-auto h-[calc(100vh-80px)]">
@@ -72,7 +65,7 @@ const Chat = () => {
                 ${selectedChat === contact.id ? "bg-[#1e3a8a]" : "hover:bg-[#1a2b5a]"} 
                 hover:border hover:border-blue-400 hover:shadow-[0_0_15px_rgba(0,0,255,0.6)] rounded-lg`}
             >
-              <img src={contact.avatar} alt={contact.name} className="w-12 h-12 rounded-full object-cover" />
+              {/* <img src={contact.avatar} alt={contact.name} className="w-12 h-12 rounded-full object-cover" /> */}
               <div className="ml-4 flex-1">
                 <h3 className="font-semibold">{contact.name}</h3>
                 <p className="text-sm text-gray-400 truncate">{contact.lastMessage}</p>
@@ -82,14 +75,28 @@ const Chat = () => {
         </div>
       </div>
 
-      {/* Chat Window */}
+
       <div className="flex-1 flex flex-col bg-transparent text-white">
         <div className="p-4 border-b border-gray-700 flex items-center justify-between bg-[#112240] shadow-md hover:shadow-[0_0_10px_rgba(0,0,255,0.5)] transition">
           <div className="flex items-center">
-            <img src={contacts[selectedChat]?.avatar} alt={contacts[selectedChat]?.name} className="w-10 h-10 rounded-full object-cover" />
+          <img
+              src={selectedChat ? contacts.find((contact) => contact.id === selectedChat)?.avatar : ""}
+              alt={selectedChat ? contacts.find((contact) => contact.id === selectedChat)?.name : ""}
+              className="w-10 h-10 rounded-full object-cover"
+            />
             <div className="ml-4">
-              <h3 className="font-semibold">{contacts[selectedChat]?.name}</h3>
-              <p className="text-sm text-gray-400">{contacts[selectedChat]?.online ? "Online" : "Offline"}</p>
+              <h3 className="font-semibold">
+                {selectedChat
+                  ? contacts.find((contact) => contact.id === selectedChat)?.name
+                  : "Select a chat"}
+              </h3>
+              <p className="text-sm text-gray-400">
+                {selectedChat
+                  ? contacts.find((contact) => contact.id === selectedChat)?.online
+                    ? "Online"
+                    : "Offline"
+                  : ""}
+              </p>
             </div>
           </div>
           <BsThreeDotsVertical className="text-gray-400 text-xl cursor-pointer hover:text-white" />
@@ -99,7 +106,9 @@ const Chat = () => {
         <div className="flex-1 overflow-y-auto p-4 bg-transparent">
           {messages.map((msg) => (
             <div key={msg.id} className={`flex mb-4 ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[70%] ${msg.sender === "me" ? "bg-[#1e3a8a] text-white" : "bg-[#112240] text-white"} rounded-lg p-3 shadow-md hover:shadow-[0_0_10px_rgba(0,0,255,0.5)] transition`}>
+              <div
+                className={`max-w-[70%] ${msg.sender === "me" ? "bg-[#1e3a8a] text-white" : "bg-[#112240] text-white"} rounded-lg p-3 shadow-md hover:shadow-[0_0_10px_rgba(0,0,255,0.5)] transition`}
+              >
                 <p>{msg.text}</p>
                 <div className="flex items-center justify-end mt-1">
                   <span className="text-xs opacity-70">{msg.timestamp}</span>
@@ -123,7 +132,10 @@ const Chat = () => {
               className="flex-1 px-4 py-2 bg-[#0a192f] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-[0_0_10px_rgba(0,0,255,0.5)] transition"
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
             />
-            <button onClick={handleSendMessage} className="p-2 bg-[#1e3a8a] text-white rounded-lg hover:bg-blue-600 hover:shadow-[0_0_10px_rgba(0,0,255,0.5)] transition">
+            <button
+              onClick={handleSendMessage}
+              className="p-2 bg-[#1e3a8a] text-white rounded-lg hover:bg-blue-600 hover:shadow-[0_0_10px_rgba(0,0,255,0.5)] transition"
+            >
               <BsSend />
             </button>
           </div>

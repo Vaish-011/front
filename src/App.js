@@ -12,8 +12,12 @@ import CV from './components/cvbuilder';
 import Tasklist from './components/Tasklist';
 import Feedback from './components/Feedback/index.js';
 import React from "react";
+import SearchUsers from "./components/chats/SearchUsers.js";
 
+import { useState } from "react";
 function App() {
+  const [receiver, setReceiver] = useState(null); // Selected user for chat
+
   return (
     <div className="App">
     <BrowserRouter>
@@ -23,7 +27,11 @@ function App() {
     </Routes>
     <Routes>
     <Route path='/post' element={<Post />}/>
-    <Route path='/chat' element={<Chat/>}/>
+    <Route 
+  path='/chat' 
+  element={<Chat receiver={receiver} setReceiver={setReceiver} />} 
+/>
+
     <Route path='/login' element={<Login/>}/>
     <Route path='/user' element={<User/>}/>
     <Route path='/resume' element={<Resume/>}/>
