@@ -22,7 +22,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 </li>
                 <li onClick={toggleSidebar}>
                     <FaStar />
-                    <Link to="/rate-us">Rate Us</Link>
+                    <Link to="/tasklist">Rate Us</Link>
                 </li>
                 <li onClick={toggleSidebar}>
                     <FaComment />
