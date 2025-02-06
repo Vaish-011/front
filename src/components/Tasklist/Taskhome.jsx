@@ -41,7 +41,7 @@ function Taskhome() {
             
           const newTask = { 
           task_name: tasks, 
-          task_date: date, 
+          task_date: new Date(date).toISOString().slice(0, 19).replace('T', ' '), 
           task_time: time,
           remainder,
           client_id: user.id
@@ -177,7 +177,7 @@ function Taskhome() {
                   className="task-checkbox"
                 />
                 <p><strong>{task.task_name}</strong></p>
-                <p>{task.task_date} | {task.task_time}</p>
+                <p>{new Date(task.task_date).toLocaleDateString()} | {task.task_time}</p>
                 {task.remainder && <p><FaBell/> Reminder Set</p>}
                 <div className="task-actions">
                   <button onClick={() => handleEdit(index)}><FaEdit /></button>
