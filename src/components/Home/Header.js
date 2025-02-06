@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
 
+
 function Header() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
@@ -36,14 +37,15 @@ function Header() {
           <div className="icon-container" title="Home">
             <FaHome className="icon-3d" />
           </div>
-          <div className="icon-container" title="Friends">
+          <div className="icon-container" title="Friends" onClick={()=>navigate('/connect')}>
             <FaUserFriends className="icon-3d" />
           </div>
           <div className="icon-container" title="AI-Resumebuilder">
-            <FaSuitcase className="icon-3d" />
+            <FaSuitcase className="icon-3d" onClick={()=>navigate('/resume')} />
           </div>
           <div className="icon-container" title="Notifications">
             <FaBell className="icon-3d" />
+            
           </div>
           <div className="icon-container" title="Messages" onClick={()=>navigate('/chat')}>
             <FaComment className="icon-3d" />
