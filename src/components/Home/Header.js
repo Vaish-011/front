@@ -41,10 +41,11 @@ function Header() {
             <FaUserFriends className="icon-3d" />
           </div>
           <div className="icon-container" title="AI-Resumebuilder">
-            <FaSuitcase className="icon-3d" />
+            <FaSuitcase className="icon-3d" onClick={()=>navigate('/resume')} />
           </div>
           <div className="icon-container" title="Notifications">
             <FaBell className="icon-3d" />
+            
           </div>
           <div className="icon-container" title="Messages" onClick={()=>navigate('/chat')}>
             <FaComment className="icon-3d" />
