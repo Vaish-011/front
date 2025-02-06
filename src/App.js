@@ -12,6 +12,7 @@ import CV from './components/cvbuilder';
 import Tasklist from './components/Tasklist';
 import Feedback from './components/Feedback/index.js';
 import React from "react";
+import ConnectPage from './components/connection/index.js';
 import SearchUsers from "./components/chats/SearchUsers.js";
 
 import { useState } from "react";
@@ -37,6 +38,7 @@ function App() {
     <Route path='/resume' element={<Resume/>}/>
     <Route path='/cv' element={<CV/>}/>
     <Route path='/tasklist' element={<Tasklist/>}/>
+    <Route path='/connect' element={<ConnectPage/>}/>
     <Route path='/feedback' element={<Feedback/>}/>
     </Routes>
     </BrowserRouter>
