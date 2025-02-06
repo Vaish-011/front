@@ -1,6 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaStar } from "react-icons/fa";
+import { useEffect} from "react";
 
 const Feedback = () => {
+  const [rating, setRating] = useState(null);
+  const [hover, setHover] = useState(null);
+  const [message, setMessage] = useState("");
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+          const storedUser = JSON.parse(localStorage.getItem("user"));
+          const storedToken = localStorage.getItem("token");
+  
+          if (storedUser && storedToken) {
+              setUser(storedUser);
+              setToken(storedToken);
+          }
+      }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!rating || !message) {
+      alert("Please provide both a rating and a message.");
+      return;
+    }
+
+    const feedbackData = {
+      userId: user.id,  
+      rating,
+      message,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/feedback/feed", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(feedbackData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Feedback submitted successfully!");
+        setMessage(""); // Clear message after submission
+        setRating(null);
+      } else {
+        alert("Error: " + data.error);
+      }
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      alert("Failed to submit feedback.");
+    }
+  };
+
   return (
     <section>
       <div className="bg-black text-white py-20">
@@ -11,7 +66,7 @@ const Feedback = () => {
               Leave us a feedback!
             </p>
             <p className="text-sm md:text-base leading-snug text-gray-50 text-opacity-100">
-            We’d love to hear from you! Share your thoughts and help us improve — your feedback means the world to us!
+              We’d love to hear from you! Share your thoughts and help us improve — your feedback means the world to us!
             </p>
           </div>
           <div className="flex flex-col w-full lg:w-2/3 justify-center">
@@ -20,20 +75,30 @@ const Feedback = () => {
                 <div className="w-full lg:w-6/12 px-4">
                   <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white">
                     <div className="flex-auto p-5 lg:p-10">
-                      <h4 className="text-2xl mb-4 text-black font-semibold">Have a suggestion?</h4>
-                      <form id="feedbackForm" action="" method="">
-                        <div className="relative w-full mb-3">
-                          <label className="block uppercase text-gray-700 text-xs font-bold mb-2" htmlFor="email">
-                            Email
-                          </label>
-                          <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            className="border-0 px-3 py-3 rounded text-sm shadow w-full bg-gray-300 placeholder-black text-gray-800 outline-none focus:bg-gray-400"
-                            placeholder="Enter your email"
-                            required
-                          />
+                      <h4 className="text-2xl mb-4 text-black font-semibold">Rate our website</h4>
+                      <form onSubmit={handleSubmit}>
+                        <div className="relative w-full mb-3 flex justify-center space-x-2">
+                          {[...Array(5)].map((_, index) => {
+                            const currentRating = index + 1;
+                            return (
+                              <label key={index}>
+                                <input
+                                  type="radio"
+                                  name="rating"
+                                  value={currentRating}
+                                  className="hidden"
+                                  onClick={() => setRating(currentRating)}
+                                />
+                                <FaStar
+                                  size={30}
+                                  className="cursor-pointer"
+                                  color={currentRating <= (hover || rating) ? "#fbbf24" : "#ccc"}
+                                  onMouseEnter={() => setHover(currentRating)}
+                                  onMouseLeave={() => setHover(null)}
+                                />
+                              </label>
+                            );
+                          })}
                         </div>
                         <div className="relative w-full mb-3">
                           <label className="block uppercase text-gray-700 text-xs font-bold mb-2" htmlFor="message">
@@ -42,16 +107,16 @@ const Feedback = () => {
                           <textarea
                             maxLength="300"
                             name="feedback"
-                            id="feedback"
                             rows="4"
                             className="border-0 px-3 py-3 bg-gray-300 placeholder-black text-gray-800 rounded text-sm shadow focus:outline-none w-full"
                             placeholder="Write your feedback here..."
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
                             required
                           ></textarea>
                         </div>
                         <div className="text-center mt-6">
                           <button
-                            id="feedbackBtn"
                             className="bg-purple-600 text-black text-center mx-auto active:bg-yellow-400 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
                             type="submit"
                           >
