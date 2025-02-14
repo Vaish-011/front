@@ -3,18 +3,24 @@ import { FaCalendarAlt , FaClock ,  FaBell , FaEdit , FaTrash} from "react-icons
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from 'axios';
+import TodaysTasks from './TodaysTasks';
+import UpcomingTasks from './UpcomingTasks';
+
 
 function Taskhome() {
     const [tasks , setTasks] = useState('');
     const [taskList, setTaskList] = useState([]);
     const [user, setUser] = useState(null);
     const [token, setToken] = useState("");
-    const [date , setDate] = useState(null);
+    const [date , setDate] = useState(new Date());
     const [time , setTime] = useState('');
     const [remainder , setRemainder] = useState(false);
     const [showCalendar, setShowCalendar] = useState(false);
     const [editIndex, setEditIndex] = useState(null); 
     const [showTimePicker, setShowTimePicker] = useState(false);
+    const [showTodayTasks, setShowTodayTasks] = useState(false);
+    const [todayTasks , setTodayTasks] = useState([]);
+    const [showUpcomingTasks, setShowUpcomingTasks] = useState(false);
 
     useEffect(()=>{
       axios.get('http://localhost:5000/api/tasks/task')
@@ -22,8 +28,6 @@ function Taskhome() {
          .catch(err => console.error("Error tasks : " , err));
     } , []);
 
-
-    
     useEffect(() => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
       const storedToken = localStorage.getItem("token");
@@ -33,15 +37,55 @@ function Taskhome() {
           setToken(storedToken);
       }
   }, []);
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  
+  const handleShowTodayTasks = () => {
+    const todayDate = new Date().toISOString().split("T")[0];
+    const todayTasks = taskList.filter((task) => {
+        if (task.task_date) {
+            const taskDate = new Date(task.task_date).toISOString().split("T")[0]; 
+            return taskDate === todayDate; 
+        }
+        return false;
+    });
+
+    console.log(todayTasks);
+  
+    if (todayTasks.length > 0) { 
+        setTodayTasks(todayTasks); 
+        setShowTodayTasks(true); 
+    } else {
+        setShowTodayTasks(false); 
+    }
+  };
+  
+const handleShowUpcomingTasks = () => {
+  const todayDate = new Date().toISOString().split("T")[0];
+  const upcomingTasks = taskList.filter(task => {
+      if (task.task_date) {
+          const taskDate = task.task_date.split("T")[0];
+          return taskDate > todayDate; 
+      }
+      return false;
+  });
+
+  setShowUpcomingTasks(upcomingTasks.length > 0);
+
+};
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+        if (!user) {
+          console.error("User is not logged in!");
+          return;
+      }
         if(tasks.trim() === "")
            return;
+
+        const formattedDate = date ? new Date(date).toISOString().slice(0, 19).replace('T', ' ') : null;
             
           const newTask = { 
           task_name: tasks, 
-          task_date: new Date(date).toISOString().slice(0, 19).replace('T', ' '), 
+          task_date: formattedDate,
           task_time: time,
           remainder,
           client_id: user.id
@@ -56,12 +100,12 @@ function Taskhome() {
                   setTaskList(updatedTasks);
                   setEditIndex(null);
                })
-               .catch(err => console.erroe("Error in updating the task : " , err));
+               .catch(err => console.error("Error in updating the task : " , err));
             
         } else {
             axios.post('http://localhost:5000/api/tasks/task' , newTask)
                .then(response => {
-                setTaskList((prevList) => [...prevList, {...newTask , id: response.data.taskId}
+                setTaskList((prevList) => [...prevList, {...newTask , task_id: response.data.taskId}
 
                 ]);
                })
@@ -72,14 +116,14 @@ function Taskhome() {
         setTasks('');
         setTime('')
         setRemainder(false);
-        setDate(null);
+        setDate(new Date());
       }
   
 
   const handleEdit = (index) => {
         const taskToEdit = taskList[index];
         setTasks(taskToEdit.task_name);
-        setDate(taskToEdit.task_date ? new Date(taskToEdit.task_date) : null);
+        setDate(taskToEdit.task_date ? new Date(taskToEdit.task_date) : new Date());
         setTime(taskToEdit.task_time);
         setRemainder(taskToEdit.remainder);
         setEditIndex(index);
@@ -101,8 +145,19 @@ function Taskhome() {
         setTaskList(updatedTaskList);
     }
 
+    const handleDateChange = (selectedDate) => {
+      const adjustedDate = new Date(selectedDate);
+      adjustedDate.setHours(12, 0, 0, 0);
+      setDate(adjustedDate);
+      setShowCalendar(false);
+  };
+
     return (
         <div className="task-container">
+          <div className="sidebar">
+                <button onClick={handleShowTodayTasks}>Today</button>
+                <button onClick={handleShowUpcomingTasks}>Upcoming</button>
+            </div>
           <div className="input-section">
             <div className="input-wrapper">
               <div className="input-with-button">
@@ -124,10 +179,8 @@ function Taskhome() {
                   {showCalendar && (
                     <div className="date-picker-container">
                       <Calendar
-                        onChange={(selectedDate) => {
-                          setDate(selectedDate);
-                          setShowCalendar(false);
-                        }}
+                        onChange={(handleDateChange)}
+                          
                         value={date || new Date()}
                         minDate={new Date()} 
                         maxDate={new Date(2025, 12, 31)} 
@@ -165,7 +218,6 @@ function Taskhome() {
               </div>
             </div>
           </div>
-      
           
           <div className="task-list">
             {taskList.map((task, index) => (
@@ -186,7 +238,17 @@ function Taskhome() {
               </div>
             ))}
           </div>
+          {showTodayTasks && 
+          <TodaysTasks 
+             tasks={todayTasks} 
+             onEdit={handleEdit} 
+             onDelete={handleDelete} 
+             onCheckboxChange={handleCheckboxChange} />}
+          
+          {showUpcomingTasks && <UpcomingTasks taskList={taskList} />}
+
         </div>
+       
       );
 }
      

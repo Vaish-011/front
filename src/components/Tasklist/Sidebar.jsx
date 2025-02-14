@@ -1,50 +1,52 @@
-import React, { use, useState } from 'react'
-import { FaBell ,  FaSearch , FaInbox , FaCalendarAlt , FaClock ,  FaCheckCircle  } from "react-icons/fa";
-import { PiSidebarSimpleBold } from "react-icons/pi";
+import React, { useState } from 'react';
+import { FaBell, FaSearch, FaInbox, FaCalendarAlt, FaClock, FaCheckCircle } from 'react-icons/fa';
+import { PiSidebarSimpleBold } from 'react-icons/pi';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './sidebar.css';
 
-function Sidebar({onInboxClick}) {
-  
-  const [isOpen , setIsOpen] = useState(true);
+function Sidebar() {
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(true);
 
-  const toggleSideBar = () => {
+  const toggleSidebar = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-      <div className='toggle-icon' onClick={toggleSideBar}>
-      <PiSidebarSimpleBold className='icon' />
-      </div>
+      <PiSidebarSimpleBold className="toggle-icon" onClick={toggleSidebar} />
 
-      <nav className='nav-menu'>
-      <div className='toggle-icon' onClick={toggleSideBar}>
-         <PiSidebarSimpleBold className='icon' />
-      </div>
-
-      <div className='nav-item'>
-        <FaBell className='icon'/> Notification
-      </div>
-        <div className='nav-item'>
-        <FaSearch className='icon' /> Search
-        </div>
-        <div className='nav-item' onClick={onInboxClick}>
-        <FaInbox className='icon'/> Inbox
-        </div>
-        <div className='nav-item'>
-        <FaCalendarAlt className='icon'/> Today
-        </div>
-        <div className='nav-item'>
-        <FaCalendarAlt className='icon'/> Upcoming
-        </div>
-        <div className='nav-item'>
-        <FaClock className='icon' /> Pending Tasks
-        </div>
-        <div className='nav-item'>
-        <FaCheckCircle className='icon' /> Completed Tasks
-        </div>
-      </nav>
-      
+      <ul className="nav-menu">
+        <li className="nav-item">
+          <FaBell className="icon" />
+          <Link to="/tasklist/notifications">Notifications</Link>
+        </li>
+        <li className="nav-item">
+          <FaSearch className="icon" /> 
+          <Link to="/tasklist/search">Search</Link>
+        </li>
+        <li className="nav-item" >
+          <FaInbox className="icon" />
+          <Link to="/tasklist">Inbox</Link>
+        </li>
+        <li className="nav-item">
+          <FaCalendarAlt className="icon" />
+          <Link to="/tasklist/today">Today</Link>
+        </li>
+        <li className="nav-item" >
+          <FaCalendarAlt className="icon" />
+          <Link to="/tasklist/upcoming">Upcoming</Link>
+        </li>
+        <li className="nav-item" >
+          <FaClock className="icon" />
+          <Link to="/tasklist/pending">Pending Tasks</Link>
+        </li>
+        <li className="nav-item" >
+          <FaCheckCircle className="icon" /> 
+          <Link to="/tasklist/completed">Completed Tasks</Link>
+        </li>
+      </ul>
     </div>
   );
 }

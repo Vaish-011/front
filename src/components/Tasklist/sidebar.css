@@ -1,6 +1,7 @@
 .sidebar {
     width: 250px;
     height: 100vh;
+    z-index: 10;
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
     position: fixed;
@@ -9,7 +10,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3); 
     transition: transform 0.3s ease-in-out;
   }
@@ -20,14 +21,28 @@
 
   .sidebar.open{
     transform: translate(0);
+   
   }
   
   .toggle-icon{
     position: absolute;
     top: 20px;
+    font-size: 25px;
     left: 100%;
     margin-left: 10px;
     cursor: pointer;
+    z-index: 15; 
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    transition: opacity 0.3s ease-in-out;
+    z-index: 8; 
   }
 
   .notification {
@@ -44,15 +59,15 @@
   .nav-menu {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-top: 40px;
+    gap: 1px;
+    margin-top: 30px;
   }
   
   
   .nav-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     font-size: 18px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -79,7 +94,7 @@
     max-width:100%;
     transform: translateX(-50%);
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    z-index: 5;
   }
   
   .input-wrapper {
@@ -94,6 +109,7 @@
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
     margin-bottom: 20px;
+    z-index: 7;
   }
 
   .input-with-button {
@@ -116,6 +132,7 @@
     transition: background-color 0.3s ease;
     position: relative;
     left:-50px;
+    z-index: 6; 
   }
   
   .task-input:focus {
@@ -260,6 +277,29 @@
   padding: 10px;
 } */
 
+.task-list {
+  max-height: 500px; 
+  overflow-y: auto;
+  padding-right: 10px; 
+  scrollbar-width: thin; 
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+
+.task-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.task-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
 /* Task Items */
 .task-item {
   background: rgba(255, 255, 255, 0.1); /* Slightly transparent dark background */
@@ -273,6 +313,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  overflow-y: auto;
+  z-index: 6; 
 }
 
 
