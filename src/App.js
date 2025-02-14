@@ -13,11 +13,51 @@ import Feedback from './components/Feedback/index.js';
 import React from "react";
 import ConnectPage from './components/connection/index.js';
 import SearchUsers from "./components/chats/SearchUsers.js";
-import AIResumeBuilder from './components/AIresumebuilder';
-
-import { useState } from "react";
+import InvitationPage from './components/connection/invitation.js';
+import TodaysTasks from './components/Tasklist/TodaysTasks.jsx';
+import PendingTasks from './components/Tasklist/PendingTasks.jsx';
+import UpcomingTasks from './components/Tasklist/UpcomingTasks.jsx';
+import CompletedTasks from './components/Tasklist/CompletedTasks.jsx';
+import AIresumebuilder from './components/AIresumebuilder/Home.jsx';
+import useFormHandlers from './components/AIresumebuilder/Handler.jsx';
+import Resume from './components/AIresumebuilder/Resume.jsx';
+import Form from './components/AIresumebuilder/Form.jsx';
+import { useState,useEffect } from "react";
 function App() {
   const [receiver, setReceiver] = useState(null); // Selected user for chat
+  const [loading1, setLoading1] = useState(true); // State for useFormHandlers (assuming for the first form)
+  const [loading2, setLoading2] = useState(true); // State for useFormHandlers2 (assuming for the second form)
+  // Form handler for resume 1 (using useFormHandlers)
+  const {
+    formData: formData1,
+    handleChange: handleChange1,
+    handleArrayChange: handleArrayChange1,
+    handleNestedArrayChange: handleNestedArrayChange1,
+    addSkill: addSkill1,
+    addEducation: addEducation1,
+    addCertificate: addCertificate1,
+    addLanguage: addLanguage1,
+    handleAddExperience: handleAddExperience1,
+    handleDelete: handleDelete1,
+    handleSubmit: handleSubmit1,
+} = useFormHandlers();
+
+
+// useEffect for loading states
+useEffect(() => {
+    const timeout1 = setTimeout(() => {
+        setLoading1(false); // Set loading state for the first form handler
+    }, 2000);
+
+    const timeout2 = setTimeout(() => {
+        setLoading2(false); // Set loading state for the second form handler
+    }, 2000);
+
+    return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+    };
+}, []);
 
   return (
     <div className="App">
@@ -35,11 +75,39 @@ function App() {
 
     <Route path='/login' element={<Login/>}/>
     <Route path='/user' element={<User/>}/>
-    <Route path='/resume' element={<AIResumeBuilder/>}/>
     <Route path='/cv' element={<CV/>}/>
     <Route path='/tasklist' element={<Tasklist/>}/>
     <Route path='/connect' element={<ConnectPage/>}/>
     <Route path='/feedback' element={<Feedback/>}/>
+    <Route path='/invitation' element={<InvitationPage/>}/>
+    <Route path='/tasklist/today' element={<TodaysTasks/>}/>
+    <Route path='/tasklist/pending' element={<PendingTasks/>}/>
+    <Route path='/tasklist/upcoming' element={<UpcomingTasks/>}/>
+    <Route path='/tasklist/completed' element={<CompletedTasks/>}/>
+    <Route path='/resume' element={<AIresumebuilder/>}/>
+      {/* Route for Resume 1 */}
+      <Route path="/resume/1" element={
+                            <div className="form-and-resume">
+                                <div className="form-wrapper">
+                                    <Form
+                                        formData={formData1}
+                                        handleChange={handleChange1}
+                                        handleArrayChange={handleArrayChange1}
+                                        addSkill={addSkill1}
+                                        addEducation={addEducation1}
+                                        addCertificate={addCertificate1}
+                                        addLanguage={addLanguage1}
+                                        handleAddExperience={handleAddExperience1}
+                                        handleNestedArrayChange={handleNestedArrayChange1}
+                                        handleSubmit={handleSubmit1}
+                                        handleDelete={handleDelete1}
+                                    />
+                                </div>
+                                <div className="resume-wrapper">
+                                    <Resume resumeData={formData1} />
+                                </div>
+                            </div>
+                        } />
     </Routes>
     </BrowserRouter>
   </div>
