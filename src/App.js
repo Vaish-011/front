@@ -1,4 +1,3 @@
-
 import {BrowserRouter,Route,Routes} from 'react-router-dom';
 import './App.css';
 import Home from './components/Home/index';
@@ -9,6 +8,10 @@ import Post from './components/Post';
 import User from './components/User';
 import CV from './components/cvbuilder';
 import Tasklist from './components/Tasklist';
+import Referral from './components/Referral';
+import JobForm from './components/Referral/JobForm';
+import JobList from './components/Referral/JobList';
+import RequestReferralForm from './components/Referral/RequestReferralForm.js';
 import Feedback from './components/Feedback/index.js';
 import React from "react";
 import ConnectPage from './components/connection/index.js';
@@ -18,11 +21,11 @@ import TodaysTasks from './components/Tasklist/TodaysTasks.jsx';
 import PendingTasks from './components/Tasklist/PendingTasks.jsx';
 import UpcomingTasks from './components/Tasklist/UpcomingTasks.jsx';
 import CompletedTasks from './components/Tasklist/CompletedTasks.jsx';
+import Notification from './components/Tasklist/notification.jsx';
 import AIresumebuilder from './components/AIresumebuilder/Home.jsx';
 import useFormHandlers from './components/AIresumebuilder/Handler.jsx';
 import Resume from './components/AIresumebuilder/Resume.jsx';
 import Form from './components/AIresumebuilder/Form.jsx';
-import ProfilePage from './components/User';
 import ConnectionPage from './components/connection/connectionpage.js';
 import { useState,useEffect } from "react";
 function App() {
@@ -79,6 +82,10 @@ useEffect(() => {
     <Route path='/user' element={<User/>}/>
     <Route path='/cv' element={<CV/>}/>
     <Route path='/tasklist' element={<Tasklist/>}/>
+    <Route path='/referral' element={<Referral/>}/>
+    <Route path="/referral/form" element={<JobForm />} />
+    <Route path="/referral/joblist" element={<JobList />} />
+    <Route path="/referral/requestform" element={<RequestReferralForm />} />
     <Route path='/connect' element={<ConnectPage/>}/>
     <Route path='/feedback' element={<Feedback/>}/>
     <Route path='/invitation' element={<InvitationPage/>}/>
@@ -86,8 +93,8 @@ useEffect(() => {
     <Route path='/tasklist/pending' element={<PendingTasks/>}/>
     <Route path='/tasklist/upcoming' element={<UpcomingTasks/>}/>
     <Route path='/tasklist/completed' element={<CompletedTasks/>}/>
+    <Route path='/tasklist/notifications' element={<Notification />} />
     <Route path='/resume' element={<AIresumebuilder/>}/>
-    <Route path='/user' element={<ProfilePage/>}/>
     <Route path='/my_connections' element={<ConnectionPage/>}/>
       {/* Route for Resume 1 */}
       <Route path="/resume/1" element={
