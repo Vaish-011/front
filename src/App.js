@@ -22,6 +22,8 @@ import AIresumebuilder from './components/AIresumebuilder/Home.jsx';
 import useFormHandlers from './components/AIresumebuilder/Handler.jsx';
 import Resume from './components/AIresumebuilder/Resume.jsx';
 import Form from './components/AIresumebuilder/Form.jsx';
+import ProfilePage from './components/User';
+import ConnectionPage from './components/connection/connectionpage.js';
 import { useState,useEffect } from "react";
 function App() {
   const [receiver, setReceiver] = useState(null); // Selected user for chat
@@ -85,6 +87,8 @@ useEffect(() => {
     <Route path='/tasklist/upcoming' element={<UpcomingTasks/>}/>
     <Route path='/tasklist/completed' element={<CompletedTasks/>}/>
     <Route path='/resume' element={<AIresumebuilder/>}/>
+    <Route path='/user' element={<ProfilePage/>}/>
+    <Route path='/my_connections' element={<ConnectionPage/>}/>
       {/* Route for Resume 1 */}
       <Route path="/resume/1" element={
                             <div className="form-and-resume">

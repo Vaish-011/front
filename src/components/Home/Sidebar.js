@@ -18,7 +18,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <ul>
                 <li onClick={toggleSidebar}>
                     <FaUser />
-                    <Link to="/">Dashboard</Link>
+                    <Link to="/user">Dashboard</Link>
                 </li>
                 <li onClick={toggleSidebar}>
                     <FaStar />
