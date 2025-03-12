@@ -27,9 +27,12 @@ function HomePage() {
   };
   const handleTasklistButtonClick =()=>{
     navigate("/tasklist");
-  }
+  };
   const handleFeedbackButtonClick =()=>{
     navigate("/feedback");
+  };
+  const handleReferralButtonClick =()=>{
+    navigate("/referral/form");
   }
 
 
@@ -44,6 +47,7 @@ function HomePage() {
       <button onClick={handlecvButtonClick}>CVBUILDER PAGE</button>
       <button onClick={handleFeedbackButtonClick}>Feedback Page</button>
       <button onClick={handleTasklistButtonClick}>TasklistPage</button>
+      <button onClick={handleReferralButtonClick}>Referral</button>
     </div>
   );
 }
