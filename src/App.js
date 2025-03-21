@@ -5,7 +5,7 @@ import HomePage from './components/HomePage';
 import Chat from './components/chats';
 import Login from './components/Login/login.jsx';
 import Post from './components/Post';
-import User from './components/User';
+import ProfilePage from './components/User/index.js';
 import CV from './components/cvbuilder';
 import Tasklist from './components/Tasklist';
 import Referral from './components/Referral';
@@ -27,6 +27,9 @@ import useFormHandlers from './components/AIresumebuilder/Handler.jsx';
 import Resume from './components/AIresumebuilder/Resume.jsx';
 import Form from './components/AIresumebuilder/Form.jsx';
 import ConnectionPage from './components/connection/connectionpage.js';
+import EditProfile from './components/User/editprofile.js';
+import Notifications from "./components/Notification/notification.js";
+import Applynow from './components/Referral/Applynow.js'
 import { useState,useEffect } from "react";
 function App() {
   const [receiver, setReceiver] = useState(null); // Selected user for chat
@@ -79,7 +82,7 @@ useEffect(() => {
 />
 
     <Route path='/login' element={<Login/>}/>
-    <Route path='/user' element={<User/>}/>
+    <Route path='/user' element={<ProfilePage/>}/>
     <Route path='/cv' element={<CV/>}/>
     <Route path='/tasklist' element={<Tasklist/>}/>
     <Route path='/referral' element={<Referral/>}/>
@@ -96,6 +99,9 @@ useEffect(() => {
     <Route path='/tasklist/notifications' element={<Notification />} />
     <Route path='/resume' element={<AIresumebuilder/>}/>
     <Route path='/my_connections' element={<ConnectionPage/>}/>
+    <Route path='/notification' element={<Notifications/>}/>
+    <Route path='/editprofile' element={<EditProfile/>}/>
+    <Route path="/referral/applynow" element={<Applynow />} />
       {/* Route for Resume 1 */}
       <Route path="/resume/1" element={
                             <div className="form-and-resume">
