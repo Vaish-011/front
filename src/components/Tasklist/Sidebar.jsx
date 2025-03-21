@@ -22,10 +22,10 @@ function Sidebar() {
           <FaBell className="icon" />
           <Link to="/tasklist/notifications">Notifications</Link>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <FaSearch className="icon" /> 
           <Link to="/tasklist/search">Search</Link>
-        </li>
+        </li> */}
         <li className="nav-item" >
           <FaInbox className="icon" />
           <Link to="/tasklist">Inbox</Link>

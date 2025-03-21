@@ -6,8 +6,8 @@ import axios from 'axios';
 function TodaysTasks() {
     const [tasks, setTasks] = useState([]);
         const [taskList, setTaskList] = useState([]);
-        const [user, setUser] = useState(null);
-        const [token, setToken] = useState("");
+        // const [user, setUser] = useState(null);
+        // const [token, setToken] = useState("");
         const [date , setDate] = useState(new Date());
         const [time , setTime] = useState('');
         const [remainder , setRemainder] = useState(false);
@@ -17,13 +17,43 @@ function TodaysTasks() {
         const [showTodayTasks, setShowTodayTasks] = useState(false);
         const [todayTasks , setTodayTasks] = useState([]);
         const [showUpcomingTasks, setShowUpcomingTasks] = useState(false);
+        const [userId, setUserId] = useState(null);
+        const [token, setToken] = useState(null);
+
+        
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const storedToken = localStorage.getItem('token');
+
+        console.log("Stored User:", storedUser);
+        console.log("Stored Token:", storedToken);
+
+        if (storedUser && storedToken) {
+            setUserId(storedUser.id);
+            setToken(storedToken);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (userId && token) {
+            console.log("userId and token are valid. Fetching tasks.");
+            fetchTodayTasks(userId);
+        } else {
+            console.log("userId or token is not valid. Skipping task fetch.");
+        }
+    }, [userId, token]);
+
     
 
-        useEffect(() => {
-            const fetchTodayTasks = async () => {
+            const fetchTodayTasks = async (client_id) => {
                 try {
-                    const response = await fetch('http://localhost:5000/api/tasks/task/today');
-                    const data = await response.json();
+                    if(!client_id) return;
+
+                    const response = await axios.get(`http://localhost:5000/api/tasks/task/today/${client_id}`, {
+                       headers: { Authorization: `Bearer ${token}` } 
+                    });
+
+                    const data = response.data
                     console.log('Fetched Data:', data);
     
                     if (Array.isArray(data)) {
@@ -38,9 +68,6 @@ function TodaysTasks() {
                 }
             };
             
-            fetchTodayTasks();
-        }, []);
-
         const handleEdit = (index) => {
             const taskToEdit = tasks[index];
             setDate(taskToEdit.task_date ? new Date(taskToEdit.task_date) : new Date());
@@ -49,15 +76,21 @@ function TodaysTasks() {
             setEditIndex(index);
         };
 
-    const handleDelete = (index) => {
+    const handleDelete = async (index) => {
         const taskId = tasks[index].task_id;
-        axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`)
-           .then(() => {
+        try{
+         await axios.delete(`http://localhost:5000/api/tasks/task/${taskId}` , { headers: { Authorization: `Bearer ${token}` },
+            data: { client_id: userId }
+
+         });
+    
             const filteredTasks = taskList.filter((_, i) => i !== index);
             setTasks(filteredTasks);
             setTaskList(filteredTasks);
-           })
-           .catch(err => console.error("Error in deleting the task : " , err));
+           }
+           catch (error) {
+            console.error("Error in deleting the task:", error);
+          }
     };
 
     const handleCheckboxChange = (index) => {
@@ -80,7 +113,13 @@ function TodaysTasks() {
                             className="task-checkbox"
                         />
                         <p><strong>{task.task_name}</strong></p>
-                        <p>{new Date(task.task_date).toLocaleDateString()} | {task.task_time}</p>
+                        {/* <p>{new Date(task.task_date).toLocaleDateString()} | {task.task_time}</p> */}
+                        {/* <p>{new Date(task.task_date).toLocaleDateString('en-US', { timeZone: 'UTC' })} | {task.task_time}</p> */}
+                        <p>{new Date(task.task_date).toLocaleDateString(undefined, {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            })} | {task.task_time}</p>
                         {task.remainder && <p><FaBell /> Reminder Set</p>}
                         <div className="task-actions">
                             <button onClick={() => handleEdit(index)}><FaEdit /></button> 

@@ -5,22 +5,35 @@ import './TodaysTasks.css';
 
 function CompletedTasks() {
   const [tasks, setTasks] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  // Fetch completed tasks on component mount
-  useEffect(() => {
-    axios.get("http://localhost:5000/api/tasks/task/completed")
-      .then(response => setTasks(response.data))
-      .catch(error => console.error("Error fetching completed tasks:", error));
-  }, []);
+    useEffect(() => {
+        if (user && user.id) {
+            axios.get(`http://localhost:5000/api/tasks/task/completed/${user.id}`)
+                .then(response => setTasks(response.data))
+                .catch(error => console.error("Error fetching completed tasks:", error));
+        }
+    }, [user]);
+
 
   // Handle task deletion
   const handleDelete = (taskId) => {
-    axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`)
-      .then(() => {
-        setTasks(tasks.filter(task => task.task_id !== taskId));
-      })
-      .catch(err => console.error("Error deleting task:", err));
-  };
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    const clientId = loggedInUser?.id; // Corrected line
+
+    if (!clientId) {
+        console.error("Client ID not found!");
+        return;
+    }
+
+    axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`, {
+        data: { client_id: clientId }
+    })
+        .then(() => {
+            setTasks(tasks.filter(task => task.task_id !== taskId));
+        })
+        .catch(err => console.error("Error deleting task:", err));
+};
 
   return (
     <div className='today-tasks-container'>

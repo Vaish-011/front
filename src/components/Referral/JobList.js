@@ -41,9 +41,12 @@ const JobList = () => {
                                 <p><strong>Employment Type:</strong> {job.employment_type}</p>
                                 <p><strong>Description:</strong> {job.description}</p>
                                 <div className={styles.buttonContainer}>
-                                    <a href={job.apply_link} target="_blank" rel="noopener noreferrer">
-                                        <button className={styles.applyButton}>Apply Now</button>
-                                    </a>
+                                    {/* <a href={job.apply_link} target="_blank" rel="noopener noreferrer"> */}
+                                        <button className={styles.applyButton}
+                                            onClick = {() => navigate(`/referral/applynow/`)}
+                                        > Apply now
+                                        </button>
+                                    {/* </a> */}
                                     <button 
                                         className={styles.referralButton} 
                                         onClick={() => navigate(`/referral/requestform/`)}

@@ -7,29 +7,36 @@ import axios from 'axios';
 function UpcomingTasks() {
     const [tasks, setTasks] = useState([]);
     const [taskList, setTaskList] = useState([]);
+    const [userId, setUserId] = useState(null);
+    const [token, setToken] = useState(null);
     const [editIndex, setEditIndex] = useState(null);
 
     useEffect(() => {
-        const fetchUpcomingTasks = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/api/tasks/task/upcoming');
-                const data = await response.json();
-                console.log('Fetched Upcoming Tasks:', data);
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const storedToken = localStorage.getItem('token');
 
-                if (Array.isArray(data)) {
-                    setTasks(data);
-                    setTaskList(data);
-                } else {
-                    setTasks([]);
-                    setTaskList([]);
-                }
-            } catch (error) {
-                console.error("Error fetching upcoming tasks:", error);
-            }
-        };
-        
-        fetchUpcomingTasks();
+        if (storedUser && storedToken) {
+            setUserId(storedUser.id);
+            setToken(storedToken);
+        }
     }, []);
+
+    useEffect(() => {
+        if (userId && token) {
+            fetchUpcomingTasks(userId);
+        }
+    }, [userId, token]);
+
+    const fetchUpcomingTasks = async (client_id) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/tasks/task/upcoming/${client_id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setTasks(response.data);
+        } catch (error) {
+            console.error("Error fetching upcoming tasks:", error);
+        }
+    };
 
     const handleEdit = (index) => {
         const taskToEdit = tasks[index];
@@ -38,6 +45,11 @@ function UpcomingTasks() {
 
     const handleDelete = (index) => {
         const taskId = tasks[index].task_id;
+        const client_id = localStorage.getItem("client_id");
+        if (!client_id) {
+            console.error("Client ID not found");
+            return;
+        }
         axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`)
             .then(() => {
                 const filteredTasks = taskList.filter((_, i) => i !== index);

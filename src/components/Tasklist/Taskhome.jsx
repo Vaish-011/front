@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState , useCallback } from 'react'
 import { FaCalendarAlt , FaClock ,  FaBell , FaEdit , FaTrash} from "react-icons/fa";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from 'axios';
 import TodaysTasks from './TodaysTasks';
 import UpcomingTasks from './UpcomingTasks';
+import PendingTasks from './PendingTasks';
+import CompletedTasks from './CompletedTasks'; 
 
 
 function Taskhome() {
@@ -21,55 +23,75 @@ function Taskhome() {
     const [showTodayTasks, setShowTodayTasks] = useState(false);
     const [todayTasks , setTodayTasks] = useState([]);
     const [showUpcomingTasks, setShowUpcomingTasks] = useState(false);
+    const [completedTasks, setCompletedTasks] = useState([]);
+    const [showPendingTasks, setShowPendingTasks] = useState(false);
+    const [pendingTasks, setPendingTasks] = useState([]);
+    const [showCompletedTasks, setShowCompletedTasks] = useState(false);
 
-    useEffect(()=>{
-      axios.get('http://localhost:5000/api/tasks/task')
-         .then(response => setTaskList(response.data))
-         .catch(err => console.error("Error tasks : " , err));
-    } , []);
 
     useEffect(() => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
       const storedToken = localStorage.getItem("token");
 
+      console.log("Taskhome user:", storedUser);
+      console.log("Taskhome token:", storedToken);
+
+
       if (storedUser && storedToken) {
           setUser(storedUser);
           setToken(storedToken);
+          setTaskList([]);
+
+          axios.get(`http://localhost:5000/api/tasks/task/${storedUser.id}`)
+          .then(response => {
+            setTaskList(response.data);
+          })
+          .catch(err => console.error("Error fetching tasks: ", err));
+          fetchCompletedTasks(storedUser.id);
+        }else {
+          setUser(null);
+          setTaskList([]);
       }
-  }, []);
+  }, [user?.id]);
+
+  const fetchCompletedTasks = (clientId) => {
+    
+    if (!clientId) return;
+    axios.get(`http://localhost:5000/api/tasks/task/completed/${clientId}`)
+        .then(response => setCompletedTasks(response.data))
+        .catch(error => console.error("Error fetching completed tasks:", error));
+};
+
   
   const handleShowTodayTasks = () => {
+    console.log("handleShowTodayTasks called");
+    if (!user) return;
+
     const todayDate = new Date().toISOString().split("T")[0];
+    console.log("Today's Date:", todayDate);
     const todayTasks = taskList.filter((task) => {
-        if (task.task_date) {
+        if (task.task_date && task.client_id === user.id) {
             const taskDate = new Date(task.task_date).toISOString().split("T")[0]; 
+            console.log("Task Date:", taskDate);
+            console.log("User ID:", user.id, "Task Client ID:", task.client_id);
             return taskDate === todayDate; 
         }
         return false;
     });
-
-    console.log(todayTasks);
-  
-    if (todayTasks.length > 0) { 
-        setTodayTasks(todayTasks); 
-        setShowTodayTasks(true); 
-    } else {
-        setShowTodayTasks(false); 
-    }
+    console.log("Today's Tasks: ", todayTasks);
+    setTodayTasks(todayTasks);
+    setShowTodayTasks(todayTasks.length > 0);
   };
-  
+
 const handleShowUpcomingTasks = () => {
-  const todayDate = new Date().toISOString().split("T")[0];
-  const upcomingTasks = taskList.filter(task => {
-      if (task.task_date) {
-          const taskDate = task.task_date.split("T")[0];
-          return taskDate > todayDate; 
-      }
-      return false;
-  });
+  setShowUpcomingTasks(true);
+};
+const handleShowPendingTasks = () => {
+  setShowPendingTasks(true);
+};
 
-  setShowUpcomingTasks(upcomingTasks.length > 0);
-
+const handleShowCompletedTasks = () => {
+  setShowCompletedTasks(true);
 };
 
 const handleSubmit = async (e) => {
@@ -81,7 +103,7 @@ const handleSubmit = async (e) => {
         if(tasks.trim() === "")
            return;
 
-        const formattedDate = date ? new Date(date).toISOString().slice(0, 19).replace('T', ' ') : null;
+        const formattedDate = date ? new Date(date).toISOString().split('T')[0] : null;
             
           const newTask = { 
           task_name: tasks, 
@@ -105,9 +127,10 @@ const handleSubmit = async (e) => {
         } else {
             axios.post('http://localhost:5000/api/tasks/task' , newTask)
                .then(response => {
-                setTaskList((prevList) => [...prevList, {...newTask , task_id: response.data.taskId}
+                // setTaskList((prevList) => [...prevList, {...newTask , task_id: response.data.taskId}
+                const newTaskWithId = { ...newTask, task_id: response.data.taskId };
+                setTaskList(prevList => [...prevList, newTaskWithId]);
 
-                ]);
                })
                .catch(err => console.error("Error in adding the tasks : " , err));
            
@@ -131,7 +154,7 @@ const handleSubmit = async (e) => {
 
     const handleDelete = (index) => {
         const taskId = taskList[index].task_id;
-        axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`)
+        axios.delete(`http://localhost:5000/api/tasks/task/${taskId}` , { data: { client_id: user.id } })
            .then(() => {
             const filteredTasks = taskList.filter((_, i) => i !== index);
             setTaskList(filteredTasks);
@@ -152,11 +175,21 @@ const handleSubmit = async (e) => {
       setShowCalendar(false);
   };
 
+  const handleTaskCompletedUpdate = useCallback(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser && storedUser.id) {
+        fetchCompletedTasks(storedUser.id);
+    }
+} , []);
+
+
     return (
         <div className="task-container">
           <div className="sidebar">
                 <button onClick={handleShowTodayTasks}>Today</button>
                 <button onClick={handleShowUpcomingTasks}>Upcoming</button>
+                <button onClick={handleShowPendingTasks}>Pending</button>
+                <button onClick={handleShowCompletedTasks}>Completed</button>
             </div>
           <div className="input-section">
             <div className="input-wrapper">
@@ -238,19 +271,26 @@ const handleSubmit = async (e) => {
               </div>
             ))}
           </div>
-          {showTodayTasks && 
+          {/* {showTodayTasks && 
           <TodaysTasks 
              tasks={todayTasks} 
              onEdit={handleEdit} 
              onDelete={handleDelete} 
-             onCheckboxChange={handleCheckboxChange} />}
+             onCheckboxChange={handleCheckboxChange} />} */}
+             
+             {showCompletedTasks && <CompletedTasks tasks={completedTasks}/>}
+              {showPendingTasks && <PendingTasks onTaskCompletedUpdate={handleTaskCompletedUpdate}/>}
+             {console.log("showTodayTasks:", showTodayTasks)}
+             {showTodayTasks &&
+                <TodaysTasks
+                    userId={user?.id}
+                    token={token}
+                />}
           
-          {showUpcomingTasks && <UpcomingTasks taskList={taskList} />}
+          {showUpcomingTasks && user && <UpcomingTasks taskList={taskList} userId={user.id}/>}
 
         </div>
        
       );
 }
-     
-
-export default Taskhome;
+     export default Taskhome;

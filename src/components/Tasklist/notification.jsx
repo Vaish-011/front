@@ -2,9 +2,25 @@ import React, { useState, useEffect } from "react";
 import "./notification.css";
 
 function NotificationComponent() {
+
+    // const clientId = user?.id;
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState("");
+    const [clientId, setClientId] = useState(null);
     const [notifications, setNotifications] = useState([]);
     const [notifiedTasks, setNotifiedTasks] = useState(new Set());
     const [permissionGranted, setPermissionGranted] = useState(Notification.permission === "granted");
+
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        const storedToken = localStorage.getItem("token");
+
+        if (storedUser && storedToken) {
+            setUser(storedUser);
+            setToken(storedToken);
+            setClientId(storedUser.id);
+        }
+    }, []);
 
     useEffect(() => {
         if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -34,34 +50,64 @@ function NotificationComponent() {
             return;
         }
 
-        if (permissionGranted) {
+        if (clientId) {
             fetchNotifications();
-            const interval = setInterval(fetchNotifications, 60000); // Fetch every 1 min
+            const interval = setInterval(fetchNotifications, 60000); // Fetch in every 1 min
             return () => clearInterval(interval);
         }
-    }, [permissionGranted]);
+    }, [clientId, permissionGranted]);
+    
+    
 
+    
     const fetchNotifications = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/tasks/task/notifications");
+
+            if (!clientId) {
+                console.error("Client ID not found!");
+                return;
+            }
+            console.log("Client ID:", clientId);
+
+            const response = await fetch(`http://localhost:5000/api/tasks/task/notifications/${clientId}`);
             if (!response.ok) throw new Error("Failed to fetch notifications");
 
             const data = await response.json();
             console.log("Fetched Notifications:", data);
 
-            const currentTime = new Date();
+            const now = new Date();
+            const currentTime = now.toLocaleTimeString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            const currentDate = now.toISOString().slice(0, 10);
+
+            console.log("Current Date:", currentDate);
+            console.log("Current Time:", currentTime);
 
             data.forEach((task) => {
-                const taskTime = new Date(`${task.task_date}T${task.task_time}`);
+                const taskDate = task.task_date.slice(0,10);
+                const taskTime = task.task_time.slice(0,5);
 
-                if (taskTime <= currentTime && !notifiedTasks.has(task.id)) {
+                console.log("Task ID:", task.id);
+                console.log("Task Date:", taskDate);
+                console.log("Task Time:", taskTime);
+
+
+                if (taskDate === currentDate && taskTime <= currentTime && !notifiedTasks.has(task.id)) {
                     sendNotification(task);
-
                     setNotifiedTasks((prevSet) => new Set(prevSet).add(task.id));
+                }
+                else {
+                    console.log("Notification Condition NOT Met for Task ID:", task.id);
+                    if (taskDate !== currentDate) {
+                        console.log("Date did not match. CurrentDate:", currentDate, "TaskDate:", taskDate);
+                    }
+                    if (taskTime > currentTime) {
+                        console.log("Time was greater then current time. CurrentTime:", currentTime, "TaskTime:", taskTime);
+                    }
                 }
             });
 
             setNotifications(data);
+            console.log("Notifications State:", data); 
         } catch (error) {
             console.error("Error fetching notifications:", error);
         }
