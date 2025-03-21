@@ -47,10 +47,7 @@ const Home = () => {
             </div>
             <div className="buttons">
                 <Link to="/resume/1">
-                    <button className="primary-btn">First Resume</button>
-                </Link>
-                <Link to="/resume/2">
-                    <button className="primary-btn">Second Resume</button>
+                    <button className="primary-btn"> Resume</button>
                 </Link>
             </div>
             {zoomedPicture && (
