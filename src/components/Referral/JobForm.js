@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"; 
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation } from "react-router-dom";
 import axios from "axios";
 import styles from "./styles/dark-theme.module.css";
 
 const JobForm = ({ fetchJobs }) => {
     const navigate = useNavigate();
-    
+    const location = useLocation();
+
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
 
@@ -34,11 +35,19 @@ const JobForm = ({ fetchJobs }) => {
             setToken(storedToken);
             setJob((prevJob) => ({
                 ...prevJob,
-                user_id: storedUser.id, // Ensure user_id is set properly
+                user_id: storedUser.id, 
             }));
         }
-    }, []);
+    
+        if(location.state && location.state.job && location.state.editing){
+            const jobToEdit = location.state.job;
+            setJob(jobToEdit);
+            setEditing(true);
+            setEditId(jobToEdit.id);
+        }
+    } , [location.state]);
 
+    
     const handleChange = (e) => setJob({ ...job, [e.target.name]: e.target.value });
 
     const submitJob = async (e) => {
@@ -64,6 +73,7 @@ const JobForm = ({ fetchJobs }) => {
             });
             fetchJobs();
             setEditing(false);
+            navigate("/referral/joblist");
         } catch (error) {
             console.error("Axios Error:", error.response?.data || error.message);
             alert(`Error: ${error.response?.data?.error || "Server Error"}`);

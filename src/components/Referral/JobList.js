@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; 
 import styles from "./styles/darkUI.module.css"; 
+import { FaLeaf } from "react-icons/fa";
 
 const JobList = () => {
     const [jobs, setJobs] = useState([]);
     const navigate = useNavigate();
+    const [user , setUser] = useState(null);
 
     useEffect(() => {
         const fetchJobs = async () => {
@@ -17,7 +19,30 @@ const JobList = () => {
             }
         };
         fetchJobs();
+
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        if(storedUser){
+            setUser(storedUser);
+        }
     }, []);
+
+    const handleDelete = async (jobId) => {
+        try{
+            await axios.delete(`http://localhost:5000/api/jobs/delete/${jobId}`);
+            setJobs(jobs.filter((job) => job.id !== jobId ));
+            // alert("Job deleted successfully");
+        }
+        catch(error){
+            console.error("Error deleting job:" , error);
+            alert("Failed to delete job");
+        }
+    }
+
+    const handleEdit = (job) => {
+        navigate(`/referral/form` , {state: {job , editing: true}});
+    }
+
+
 
     return (
         <div className={styles.pageWrapper}>
@@ -41,18 +66,14 @@ const JobList = () => {
                                 <p><strong>Employment Type:</strong> {job.employment_type}</p>
                                 <p><strong>Description:</strong> {job.description}</p>
                                 <div className={styles.buttonContainer}>
-                                    {/* <a href={job.apply_link} target="_blank" rel="noopener noreferrer"> */}
-                                        <button className={styles.applyButton}
-                                            onClick = {() => navigate(`/referral/applynow/`)}
-                                        > Apply now
-                                        </button>
-                                    {/* </a> */}
-                                    <button 
-                                        className={styles.referralButton} 
-                                        onClick={() => navigate(`/referral/requestform/`)}
-                                    >
-                                        Request Referral
-                                    </button>
+
+                                    {user && user.id === job.user_id && (
+                                        <>
+                                          <button className={styles.referralButton} onClick={() => handleEdit(job)}>Edit</button>
+                                          <button className={styles.referralButton} onClick={() => handleDelete(job.id)}>Delete</button>
+                                        </>
+                                    )}
+                                    
                                 </div>
                             </div>
                         ))

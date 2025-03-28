@@ -1,21 +1,33 @@
 import React, { useState } from "react";
 import styles from './styles/applyNow.module.css';
+import axios from "axios";
 
-const ApplyNowForm = ({ closeModal }) => {
+const ApplyNowForm = ({ closeModal , jobId , userId}) => {
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
         phone: "",
         linkedin: "",
-        portfolio: "",
+        github: "",
         resume: null,
-        coverLetter: "",
         jobTitle: "",
         experience: "",
         expectedSalary: "",
-        noticePeriod: "",
         certifications: null
     });
+
+    useEffect(() => {
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            const storedToken = localStorage.getItem('token');
+    
+            console.log("Stored User:", storedUser);
+            console.log("Stored Token:", storedToken);
+    
+            if (storedUser && storedToken) {
+                setUserId(storedUser.id);
+                setToken(storedToken);
+            }
+        }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,9 +38,29 @@ const ApplyNowForm = ({ closeModal }) => {
         setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert("Application submitted (Backend not implemented yet)");
+        const form = new FormData();
+        for(const key in formData){
+            form.append(key , formData[key]);
+        }
+        form.append('job_id' , jobId);
+        form.append('applicant_id' , userId);
+        console.log("Job ID:", jobId);
+        console.log("FormData:", form);
+        try{
+            console.log("Axios URL:", "http://localhost:5000/api/application/apply");
+            await axios.post("http://localhost:5000/api/application/apply" , form , {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            alert("Application submitted successfully!");
+            closeModal();
+        } catch(error) {
+            console.error("Error in submitting the application : " , error);
+            alert("Application failed");
+        }
     };
 
     return (
@@ -39,12 +71,10 @@ const ApplyNowForm = ({ closeModal }) => {
                 <input type="email" name="email" placeholder="Email" onChange={handleChange} required className={styles.input}/>
                 <input type="text" name="phone" placeholder="Phone Number" onChange={handleChange} required className={styles.input}/>
                 <input type="url" name="linkedin" placeholder="LinkedIn Profile" onChange={handleChange} className={styles.input}/>
-                <input type="url" name="portfolio" placeholder="Portfolio/Website" onChange={handleChange} className={styles.input}/>
-                <textarea name="coverLetter" placeholder="Message (Optional)" onChange={handleChange} className={styles.textarea}></textarea>
+                <input type="url" name="github" placeholder="Github Profile" onChange={handleChange} className={styles.input}/>
                 <input type="text" name="jobTitle" placeholder="Current Job Title (Optional)" onChange={handleChange} className={styles.input}/>
                 <input type="number" name="experience" placeholder="Years of Experience (Optional)" onChange={handleChange} className={styles.input}/>
                 <input type="number" name="expectedSalary" placeholder="Expected Salary (Optional)" onChange={handleChange} className={styles.input}/>
-                <input type="text" name="noticePeriod" placeholder="Notice Period (Optional)" onChange={handleChange} className={styles.input}/>
                 <input type="file" name="resume" onChange={handleFileChange} required className={styles.fileInput}/>
                 <input type="file" name="certifications" onChange={handleFileChange} className={styles.fileInput}/>
                 <button type="submit" className={styles.submitButton}>Submit Application</button>

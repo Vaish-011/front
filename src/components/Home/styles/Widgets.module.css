@@ -1,0 +1,11 @@
+.widgets {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.jobListContainer {
+    margin-top: 20px;
+    margin-left: auto;
+    flex-basis: 50%;
+}

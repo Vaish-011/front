@@ -11,6 +11,7 @@ import Tasklist from './components/Tasklist';
 import Referral from './components/Referral';
 import JobForm from './components/Referral/JobForm';
 import JobList from './components/Referral/JobList';
+import ApplicationPage from './components/Referral/ApplicationPage.js';
 import RequestReferralForm from './components/Referral/RequestReferralForm.js';
 import Feedback from './components/Feedback/index.js';
 import React from "react";
@@ -89,6 +90,7 @@ useEffect(() => {
     <Route path="/referral/form" element={<JobForm />} />
     <Route path="/referral/joblist" element={<JobList />} />
     <Route path="/referral/requestform" element={<RequestReferralForm />} />
+    <Route path="/referral/applicationpage" element={<ApplicationPage />} />
     <Route path='/connect' element={<ConnectPage/>}/>
     <Route path='/feedback' element={<Feedback/>}/>
     <Route path='/invitation' element={<InvitationPage/>}/>
