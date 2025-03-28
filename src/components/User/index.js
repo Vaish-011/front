@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { Camera, Edit3 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import './editprofile.css'
+import axios from "axios";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
 
-  const BASE_URL = "http://localhost:5000"; 
+  const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -31,14 +32,23 @@ export default function ProfilePage() {
         const skillsRes = await fetch(`${BASE_URL}/api/user/get_skills/${userId}`);
         const skillsData = await skillsRes.json();
 
-        const interestsRes = await fetch(`${BASE_URL}/api/user/get_interests/${userId}`);
-        const interestsData = await interestsRes.json();
+        const interestRes = await fetch(`${BASE_URL}/api/user/get_interests/${userId}`);
+        const interestsData = await interestRes.json();
+
+        const EducationRes = await fetch(`${BASE_URL}/api/user/get_education/${userId}`);
+        const EducationData = await EducationRes.json();
+
+        const ExperienceRes = await fetch(`${BASE_URL}/api/user/get_experiences/${userId}`);
+        const ExperienceData = await ExperienceRes.json();
+
 
         setProfile({
           ...profileData,
           licenses: licensesData,
           skills: skillsData,
           interests: interestsData,
+          education: EducationData,
+          experiences: ExperienceData,
         });
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -54,11 +64,10 @@ export default function ProfilePage() {
 
     const formData = new FormData();
     formData.append("profile_photo", file);
-    formData.append("user_id", userId);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/user/update_profile_photo`, {
-        method: "POST",
+      const response = await fetch(`${BASE_URL}/api/user/update-profile-photo/${userId}`, {  // Use correct route
+        method: "PUT",  // Ensure it matches backend method
         body: formData,
       });
 
@@ -73,6 +82,24 @@ export default function ProfilePage() {
     }
   };
 
+  const [profileImage, setProfileImage] = useState(null);
+
+  useEffect(() => {
+    const fetchProfilePhoto = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/api/user/get-profile-photo/${userId}`);
+        if (response.data.profile_photo) {
+            setProfileImage(`${BASE_URL}/${response.data.profile_photo}`);
+        }
+        
+      } catch (error) {
+        console.error("Error fetching profile photo:", error);
+      }
+    };
+
+    if (userId) fetchProfilePhoto();
+  }, [userId]);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white px-6 py-10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -83,10 +110,12 @@ export default function ProfilePage() {
             <img src="https://via.placeholder.com/850x250" alt="Cover" className="w-full h-36 object-cover" />
             <div className="relative flex flex-col items-center -mt-12">
               <img
-                src={profile?.profileImage ? `${BASE_URL}${profile.profileImage}` : "https://via.placeholder.com/150"}
+                src={profileImage || "https://via.placeholder.com/150"}
                 alt="Profile"
                 className="w-24 h-24 rounded-full border-4 border-gray-900"
               />
+
+
 
               <label className="mt-1 flex items-center bg-blue-600 px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-500 transition">
                 <Camera className="text-white w-5 h-5" />
@@ -109,7 +138,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Right Column */}
-        <div className="md:col-span-2 space-y-6 overflow-y-auto max-h-[700px]">
+        <div className="md:col-span-2 space-y-6 scrollable-section">
 
           {/* Activity Section */}
           <div className="bg-gray-800 rounded-lg shadow-lg p-6">
@@ -132,6 +161,37 @@ export default function ProfilePage() {
             </div>
           )}
 
+          {/*education*/}
+          {profile?.education && (
+            <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+              <h3 className="text-xl font-semibold text-blue-400 mb-3">Education</h3>
+              {profile.education.length > 0 ? (
+                <ul className="text-gray-300">
+                  {profile.education.map((educations, index) => (
+                    <li key={index} className="mb-1">{educations.institution} - {educations.degree}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">No Education available.</p>
+              )}
+            </div>
+          )}
+
+          {/*experience*/}
+          {profile?.experiences && (
+            <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+              <h3 className="text-xl font-semibold text-blue-400 mb-3">Experience</h3>
+              {profile.experiences.length > 0 ? (
+                <ul className="text-gray-300">
+                  {profile.experiences.map((experience, index) => (
+                    <li key={index} className="mb-1">{experience.job_title} - {experience.company}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">No Experience available.</p>
+              )}
+            </div>
+          )}
           {/* Skills */}
           {profile?.skills && (
             <div className="bg-gray-800 rounded-lg shadow-lg p-6">
