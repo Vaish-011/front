@@ -1,4 +1,5 @@
 .notifications-page {
+    width:600px;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 20px;
@@ -6,19 +7,61 @@
     color: white;
   }
   
+  .notifications-header {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    color: #ffffff; /* White text for dark theme */
+    background: linear-gradient(135deg, rgba(25, 6, 104, 0.6), rgba(30, 30, 30, 0.8));
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 255, 255, 0.3); /* Neon blue glow */
+    text-shadow: 2px 2px 5px rgba(0, 255, 255, 0.5); /* 3D neon effect */
+    backdrop-filter: blur(10px); /* Glassmorphism effect */
+    width: 50%;
+    margin: auto;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+
   .notifications-container {
-    max-width: 600px;
+    max-width: 400px;
+    max-height: 400px; /* Set a fixed height for scrolling */
     margin: auto;
     background: rgba(255, 255, 255, 0.2);
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  ul {
+    overflow-y: auto; /* Enable vertical scrolling */
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+}
+
+/* Scrollbar styling for Webkit-based browsers */
+.notifications-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notifications-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.notifications-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Adjust list styling to prevent overflow issues */
+ul {
     list-style: none;
     padding: 0;
-  }
+    margin: 0; /* Remove margin to avoid unnecessary spacing */
+}
+
+  
   
   li {
     padding: 10px;

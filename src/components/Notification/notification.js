@@ -21,18 +21,31 @@ const Notifications = () => {
     // Only proceed if user is not null
     useEffect(() => {
         if (!user) return;
-
+    
         const fetchNotifications = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/notifications/notifications/${user.id}`);
-                setNotifications(res.data);
+                // Fetch pending connection requests
+                const pendingRes = await axios.get(`http://localhost:5000/api/notifications/notifications/${user.id}/pending`);
+    
+                // Fetch accepted connection notifications
+                const acceptedRes = await axios.get(`http://localhost:5000/api/notifications/notifications/${user.id}/accepted`);
+                
+                // Fetch post notifications
+                const postRes = await axios.get(`http://localhost:5000/api/notifications/notifications/${user.id}/posts`);
+                
+                // Combine both notifications
+                const allNotifications = [...pendingRes.data, ...acceptedRes.data , ...postRes.data];
+    
+                // Update state
+                setNotifications(allNotifications);
             } catch (error) {
                 console.error("Error fetching notifications:", error);
             }
         };
-
+    
         fetchNotifications();
-    }, [user]); // Depend on user instead of userId
+    }, [user]);
+    
 
     return (
         <div className="notifications-page">
@@ -46,8 +59,12 @@ const Notifications = () => {
                             {notifications.map((notif, index) => (
                                 <li key={index} className={notif.read ? "read" : "unread"}>
                                     <div className="notif-card">
-                                        <p>{notif.message}</p>
-                                        <span>{moment(notif.createdAt).fromNow()}</span>
+                                    <p>
+                                        {notif.message}
+                                    </p>
+                                     {notif.type === "post_update" && ( // Show date + time only for post notifications
+                                        <span>{moment(notif.createdAt).format("MMMM D, YYYY h:mm A")}</span>
+                                     )}
                                     </div>
                                 </li>
                             ))}
