@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState , useEffect, use } from "react";
 import styles from './styles/applyNow.module.css';
 import axios from "axios";
 
-const ApplyNowForm = ({ closeModal , jobId , userId}) => {
+const ApplyNowForm = ({ closeModal , jobId}) => {
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState("");
+    const [userId , setUserId] = useState("");
+
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
