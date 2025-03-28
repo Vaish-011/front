@@ -289,7 +289,6 @@ export default function EditProfile() {
     name: "",
     email: "",
     phone: "",
-    profile_photo: "",
     summary: "",
   });
 
@@ -318,68 +317,100 @@ export default function EditProfile() {
   };
 
   const handleSubmit = async () => {
+
     try {
-      await fetch("http://localhost:5000/api/user/add_profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId, ...profile }),
-      });
-
-      await Promise.all(
-        licenses.map((license) =>
-          fetch("http://localhost:5000/api/user/add_license", {
+        // If everything is valid, send data to the backend
+        const profileResponse = await fetch("http://localhost:5000/api/user/add_profile", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, ...license }),
-          })
-        )
-      );
-      await Promise.all(
-        education.map((edu) =>
-          fetch("http://localhost:5000/api/user/add_education", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, ...edu }),
-          })
-        )
-      );
-      
-      await Promise.all(
-        Experience.map((exp) =>
-          fetch("http://localhost:5000/api/user/add_experience", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, ...exp }),
-          })
-        )
-      );
-      
-      await Promise.all(
-        skills.map((skill) =>
-          fetch("http://localhost:5000/api/user/add_skill", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, skill_name: skill }),
-          })
-        )
-      );
-
-      await Promise.all(
-        interests.map((interest) =>
-          fetch("http://localhost:5000/api/user/add_interest", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, interest_name: interest }),
-          })
-        )
-      );
-
-      alert("Profile updated successfully!");
-      navigate("/user");
-    } catch (error) {
-      console.error("Error updating profile:", error);
+            body: JSON.stringify({ user_id: userId, ...profile }),
+        });
+    }catch(e){
+      alert("Error Updating Profile");
     }
-  };
+
+    try{   // Add licenses
+        await Promise.all(
+            licenses.map((license) =>
+                fetch("http://localhost:5000/api/user/add_license", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: userId, ...license }),
+                })
+            )
+        );
+    }catch(e){
+      alert("Error Updating Profile")
+    }
+     
+    try{
+        // Add education
+        await Promise.all(
+            education.map((edu) =>
+                fetch("http://localhost:5000/api/user/add_education", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: userId, ...edu }),
+                })
+            )
+        );
+    }catch(e){
+      alert("Error Updating Profile")
+    }
+
+
+    try{
+
+        // Add experience
+        await Promise.all(
+            Experience.map((exp) =>
+                fetch("http://localhost:5000/api/user/add_experience", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: userId, ...exp }),
+                })
+            )
+        );
+
+    }catch(e){
+      alert("Error Updating Profile")
+    }
+
+    try{
+
+        // Add skills
+        await Promise.all(
+            skills.map((skill) =>
+                fetch("http://localhost:5000/api/user/add_skill", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: userId, skill_name: skill }),
+                })
+            )
+        );
+    }catch(e){
+      alert("Error Updating Profile")
+    }
+
+
+    try{
+        // Add interests
+        await Promise.all(
+            interests.map((interest) =>
+                fetch("http://localhost:5000/api/user/add_interest", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: userId, interest_name: interest }),
+                })
+            )
+        );
+
+    }catch(e){
+      alert("Error Updating Profile")
+    }
+        navigate("/user");
+};
+
 
   return (
     <div className="edit-profile-container">
@@ -390,7 +421,6 @@ export default function EditProfile() {
           <input name="name" placeholder="Full Name" value={profile.name} onChange={handleChange} className="input" />
           <input name="email" placeholder="Email" value={profile.email} onChange={handleChange} className="input" />
           <input name="phone" placeholder="Phone" value={profile.phone} onChange={handleChange} className="input" />
-          <input name="profile_photo" placeholder="Profile Photo URL" value={profile.profile_photo} onChange={handleChange} className="input" />
           <textarea name="summary" placeholder="Summary" value={profile.summary} onChange={handleChange} className="input" />
         </div>
 
