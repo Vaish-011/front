@@ -56,19 +56,21 @@ const Notifications = () => {
                         <p>No notifications yet</p>
                     ) : (
                         <ul>
-                            {notifications.map((notif, index) => (
-                                <li key={index} className={notif.read ? "read" : "unread"}>
-                                    <div className="notif-card">
-                                    <p>
-                                        {notif.message}
-                                    </p>
-                                     {notif.type === "post_update" && ( // Show date + time only for post notifications
+                        {notifications.map((notif, index) => (
+                            <li
+                                key={index}
+                                className={`${notif.read ? "read" : "unread"} ${notif.type === "post_update" ? "post-update-notif" : ""}`}
+                            >
+                                <div className="notif-card">
+                                    <p>{notif.message}</p>
+                                    {notif.type === "post_update" && (
                                         <span>{moment(notif.createdAt).format("MMMM D, YYYY h:mm A")}</span>
-                                     )}
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                    
                     )}
                 </div>
             </div>

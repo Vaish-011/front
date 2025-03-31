@@ -12,7 +12,7 @@
     font-weight: bold;
     text-align: center;
     padding: 15px 0;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     color: #ffffff; /* White text for dark theme */
     background: linear-gradient(135deg, rgba(25, 6, 104, 0.6), rgba(30, 30, 30, 0.8));
     border-radius: 12px;
@@ -38,6 +38,7 @@
     overflow-y: auto; /* Enable vertical scrolling */
     scrollbar-width: thin;
     scrollbar-color: #888 transparent;
+    margin-top: 15px;
 }
 
 /* Scrollbar styling for Webkit-based browsers */
@@ -76,3 +77,30 @@ ul {
     font-weight: bold;
   }
   
+  .post-update-notif {
+    background-color: rgba(7, 29, 52, 0.2); /* Light blue background */
+    border-left: 4px solid #042446; /* Blue left border */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.post-update-notif .notif-card {
+    font-weight: bold;
+    color: #032040; /* Blue text */
+}
+
+/* Add hover effect for all notifications */
+.notifications-container li {
+  transition: transform 0.2s ease-in-out; /* Smooth transition */
+}
+
+/* Move the notification slightly upwards when hovered */
+.notifications-container li:hover {
+  transform: translateY(-5px);
+}
+
+/* Add a special hover effect for post-update notifications */
+.post-update-notif:hover {
+  background-color: rgba(7, 29, 52, 0.4); /* Darker blue on hover */
+  border-left: 7px solid #00aaff; /* Brighter blue border */
+}
