@@ -3,6 +3,7 @@ import { Camera, Edit3 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import './editprofile.css'
 import axios from "axios";
+import ConnectionPage from '../connection/connectionpage';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -128,6 +129,12 @@ export default function ProfilePage() {
             <p className="text-blue-400">{profile?.summary || ""}</p>
             <p className="text-sm text-gray-400">{profile?.email || ""}</p>
             <p className="text-sm text-gray-400">{profile?.phone || ""}</p>
+            <button
+              onClick={() => navigate('/my_connections')}
+              className="mt-4 bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition flex items-center mx-auto"
+            >
+              <text className="w-5 h-5 mr-2" /> My Connections
+            </button>
             <button
               onClick={() => navigate('/editprofile')}
               className="mt-4 bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition flex items-center mx-auto"
