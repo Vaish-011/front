@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom'; 
 import './Resume.css';
 
 const Resume = ({ resumeData }) => {

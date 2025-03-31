@@ -31,6 +31,7 @@ import ConnectionPage from './components/connection/connectionpage.js';
 import EditProfile from './components/User/editprofile.js';
 import Notifications from "./components/Notification/notification.js";
 import Applynow from './components/Referral/Applynow.js'
+
 import { useState,useEffect } from "react";
 function App() {
   const [receiver, setReceiver] = useState(null); // Selected user for chat
