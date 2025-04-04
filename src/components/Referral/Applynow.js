@@ -1,12 +1,13 @@
-import React, { useState , useEffect, use } from "react";
+import React, { useState , useEffect} from "react";
 import styles from './styles/applyNow.module.css';
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const ApplyNowForm = ({ closeModal , jobId}) => {
+const ApplyNowForm = ({ closeModal}) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState("");
     const [userId , setUserId] = useState("");
-
+    const {jobId} = useParams();
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
@@ -48,6 +49,7 @@ const ApplyNowForm = ({ closeModal , jobId}) => {
         for(const key in formData){
             form.append(key , formData[key]);
         }
+        console.log("JobId before append:", jobId);
         form.append('job_id' , jobId);
         form.append('applicant_id' , userId);
         console.log("Job ID:", jobId);

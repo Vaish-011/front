@@ -38,7 +38,7 @@ const JobListWidget = () => {
               <div className={styles.buttonContainer}>
                 <button
                   className={styles.applyButton}
-                  onClick={() => navigate(`/referral/applynow/`)}
+                  onClick={() => navigate(`/referral/applynow/${job.id}`)}
                 >
                   Apply now
                 </button>
