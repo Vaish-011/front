@@ -1,7 +1,7 @@
 /* Sidebar Container */
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 0px;
   left: -250px; /* Sidebar hidden initially */
   width: 500px;
   height: 100%;
@@ -38,6 +38,7 @@
 /* Sidebar Menu Items */
 .sidebar ul {
   position: absolute;
+  top:90px;
   right: 20px;
   font-size: 30px;/* Close button color */
   cursor: pointer;

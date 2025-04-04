@@ -67,8 +67,8 @@ export default function ProfilePage() {
     formData.append("profile_photo", file);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/user/update-profile-photo/${userId}`, {  // Use correct route
-        method: "PUT",  // Ensure it matches backend method
+      const response = await fetch(`${BASE_URL}/api/user/update-profile-photo/${userId}`, {  
+        method: "PUT",  
         body: formData,
       });
 
@@ -90,9 +90,9 @@ export default function ProfilePage() {
       try {
         const response = await axios.get(`${BASE_URL}/api/user/get-profile-photo/${userId}`);
         if (response.data.profile_photo) {
-            setProfileImage(`${BASE_URL}/${response.data.profile_photo}`);
+          setProfileImage(`${BASE_URL}/${response.data.profile_photo}`);
         }
-        
+
       } catch (error) {
         console.error("Error fetching profile photo:", error);
       }
@@ -125,10 +125,16 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className="p-6 text-center">
-            <h2 className="text-2xl font-bold">{profile?.name || "Loading..."}</h2>
+            <h2 className="text-2xl text-white font-bold ">{profile?.name || "Loading..."}</h2>
             <p className="text-blue-400">{profile?.summary || ""}</p>
             <p className="text-sm text-gray-400">{profile?.email || ""}</p>
             <p className="text-sm text-gray-400">{profile?.phone || ""}</p>
+            <button
+              onClick={() => navigate('/leaderboard')}
+              className="mt-4 bg-green-600 px-4 py-2 rounded-lg hover:bg-green-500 transition flex items-center mx-auto"
+            >
+              🏆 Leaderboard
+            </button>
             <button
               onClick={() => navigate('/my_connections')}
               className="mt-4 bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition flex items-center mx-auto"

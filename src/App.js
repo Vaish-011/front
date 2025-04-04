@@ -11,7 +11,6 @@ import Tasklist from './components/Tasklist';
 import Referral from './components/Referral';
 import JobForm from './components/Referral/JobForm';
 import JobList from './components/Referral/JobList';
-import ApplicationPage from './components/Referral/ApplicationPage.js';
 import RequestReferralForm from './components/Referral/RequestReferralForm.js';
 import Feedback from './components/Feedback/index.js';
 import React from "react";
@@ -31,6 +30,9 @@ import ConnectionPage from './components/connection/connectionpage.js';
 import EditProfile from './components/User/editprofile.js';
 import Notifications from "./components/Notification/notification.js";
 import Applynow from './components/Referral/Applynow.js'
+import LeaderBoardPage from './components/User/leaderboard.js';
+import BookmarkedPosts from './components/Bookmark/BookmarkedPosts.js';
+import ApplicationReviewPage from './components/Referral/ApplicationReviewPage.js';
 
 import { useState,useEffect } from "react";
 function App() {
@@ -91,7 +93,7 @@ useEffect(() => {
     <Route path="/referral/form" element={<JobForm />} />
     <Route path="/referral/joblist" element={<JobList />} />
     <Route path="/referral/requestform" element={<RequestReferralForm />} />
-    <Route path="/referral/applicationpage" element={<ApplicationPage />} />
+
     <Route path='/connect' element={<ConnectPage/>}/>
     <Route path='/feedback' element={<Feedback/>}/>
     <Route path='/invitation' element={<InvitationPage/>}/>
@@ -104,7 +106,10 @@ useEffect(() => {
     <Route path='/my_connections' element={<ConnectionPage/>}/>
     <Route path='/notification' element={<Notifications/>}/>
     <Route path='/editprofile' element={<EditProfile/>}/>
-    <Route path="/referral/applynow" element={<Applynow />} />
+    <Route path="/referral/applynow/:jobId" element={<Applynow />} />
+    <Route path='/leaderboard' element={<LeaderBoardPage/>} />
+    <Route path="/referral/applicationReviewpage/:jobId" element={<ApplicationReviewPage />} />
+    <Route path='/bookmark' element={<BookmarkedPosts/>}/>
       {/* Route for Resume 1 */}
       <Route path="/resume/1" element={
                             <div className="form-and-resume">
