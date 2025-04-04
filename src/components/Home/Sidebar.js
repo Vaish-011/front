@@ -1,5 +1,5 @@
 import React from "react";
-import { FaTimes, FaUser, FaStar, FaComment, FaSignOutAlt } from "react-icons/fa";
+import { FaTimes, FaUser, FaStar, FaComment, FaSignOutAlt, FaBookmark } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
@@ -27,6 +27,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 <li onClick={toggleSidebar}>
                     <FaComment />
                     <Link to="/feedback">Feedback</Link>
+                </li>
+                <li onClick={toggleSidebar}>
+                    <FaBookmark />
+                    <Link to="/bookmark">Bookmark</Link>
                 </li>
                 <li onClick={handleLogout}>
                     <FaSignOutAlt />
