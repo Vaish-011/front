@@ -1,32 +1,28 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import "./BookmarkButton.css";
+import { useBookmarks } from './BookmarkContext';
 
-const BookmarkButton = ({ postId, userId }) => {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+const BookmarkButton = ({ postId, postTitle, postContent, postAuthor, postTime }) => {
+  const { bookmarkedPosts, toggleBookmark } = useBookmarks();
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/bookmarks/${userId}/${postId}`)
-      .then((res) => setIsBookmarked(res.data.isBookmarked))
-      .catch((err) => console.error(err));
-  }, [postId, userId]);
+  const isBookmarked = bookmarkedPosts.some(p => p.post_id === postId);
 
-  const toggleBookmark = () => {
-    const newStatus = !isBookmarked;
-    setIsBookmarked(newStatus);
-
-    axios
-      .post("http://localhost:5000/api/bookmarks", {
-        userId,
-        postId,
-        isBookmarked: newStatus,
-      })
-      .catch((err) => console.error(err));
+  const handleClick = () => {
+    toggleBookmark({
+      post_id: postId,
+      title: postTitle,
+      content: postContent,
+      author: postAuthor,
+      time: postTime,
+    });
   };
 
   return (
-    <button onClick={toggleBookmark} className="bookmark-icon" title={isBookmarked ? "Unbookmark" : "Bookmark"}>
+    <button
+      onClick={handleClick}
+      className="bookmark-icon"
+      title={isBookmarked ? "Unbookmark" : "Bookmark"}
+    >
       <span className="material-icons">
         {isBookmarked ? "bookmark" : "bookmark_border"}
       </span>
