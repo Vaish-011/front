@@ -1,0 +1,104 @@
+.container {
+    background-color: #282828;
+    color: #d4d4d4;
+    padding: 20px;
+    font-family: sans-serif;
+    width: 100%;
+    margin: 5px auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+}
+
+.title {
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #007bff;
+}
+
+.applicationList {
+    padding-right: 10px;
+}
+
+.applicationGroup {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+}
+
+.companyJobInfo {
+    flex: 1;
+    display: flex;
+    align-items: baseline; 
+}
+
+.companyJobInfo h3 {
+    font-size: 18px;
+    margin: 0;
+    color: #00b0ff;
+    margin-right: 10px; 
+}
+
+.companyJobInfo p {
+    margin: 0;
+    color: #aaa;
+}
+
+.applicants {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.applicant {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.applicant p {
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.viewProfileBtn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.viewProfileBtn:hover {
+    background-color: #0056b3;
+}
+
+.applicationList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.applicationList::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 3px;
+}
+
+.noJobs {
+    text-align: center;
+    font-size: 16px;
+    color: gray;
+    margin-top: 20px;
+}
