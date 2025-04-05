@@ -12,36 +12,29 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState("");
 
-    // Load user from localStorage
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
         if (storedUser) {
             setUser(storedUser);
-            fetchChatList(storedUser.id);  // Fetch chats for the current user
+            fetchChatList(storedUser.id);
         }
     }, []);
 
-
-
-    // Fetch chat list from API when the user changes
     const fetchChatList = async (userId) => {
         try {
             const response = await axios.get(`${API_URL}/getChats/${userId}`);
-
             const formattedChats = response.data.map(chat => ({
                 id: chat.chat_id,
-                name: chat.contact_name, 
+                name: chat.contact_name,
                 contactId: chat.contact_id
             }));
-
             setChatList(formattedChats);
-            localStorage.setItem("chatList", JSON.stringify(formattedChats));  // Store only current user's chat list
+            localStorage.setItem("chatList", JSON.stringify(formattedChats));
         } catch (error) {
             console.error("Error fetching chat list:", error);
         }
     };
 
-    // Search users
     useEffect(() => {
         if (searchQuery.length >= 1) {
             fetchSearchResults();
@@ -59,25 +52,21 @@ const Chat = () => {
         }
     };
 
-    // Start a new chat
     const handleStartChat = async (recipient) => {
         if (chatList.some(chat => chat.contactId === recipient.id)) {
             console.log("Chat already exists with this user.");
             return;
         }
-
         try {
             const response = await axios.post(`${API_URL}/addChat`, {
                 user_id: user.id,
                 contact_id: recipient.id,
             });
-
             const newChat = {
                 id: response.data.chat_id,
-                name: recipient.name, 
+                name: recipient.name,
                 contactId: recipient.id,
             };
-
             setChatList((prev) => [...prev, newChat]);
             setSelectedChat(newChat);
             fetchMessages(newChat.id);
@@ -86,7 +75,6 @@ const Chat = () => {
         }
     };
 
-    // Fetch messages
     const fetchMessages = async (chatId) => {
         try {
             const response = await axios.get(`${API_URL}/getMessages/${chatId}`);
@@ -97,7 +85,6 @@ const Chat = () => {
         }
     };
 
-    // Send a message
     const handleSendMessage = async () => {
         if (!selectedChat || !messageInput.trim()) return;
 
@@ -113,32 +100,20 @@ const Chat = () => {
         setMessageInput("");
 
         try {
-            const response = await axios.post(`${API_URL}/sendMessage`, {
+            await axios.post(`${API_URL}/sendMessage`, {
                 chat_id: selectedChat.id,
                 senderId: user.id,
                 recipientId: selectedChat.contactId,
                 message: messageInput,
             });
-
-            fetchMessages(selectedChat.id); 
+            fetchMessages(selectedChat.id);
         } catch (error) {
             console.error("Error sending message:", error);
         }
     };
 
-    // Logout function - properly clears user data and chat list
-    const handleLogout = () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("chatList");
-        setUser(null);
-        setChatList([]);
-        setSelectedChat(null);
-        setMessages([]);
-    };
-
     return (
         <div className="flex h-screen w-screen bg-gray-100">
-            {/* Sidebar */}
             <div className="w-1/3 bg-white shadow-lg p-4">
                 <h2 className="text-lg font-semibold">Chat List</h2>
                 <input
@@ -165,27 +140,22 @@ const Chat = () => {
                         </li>
                     ))}
                 </ul>
-                <button onClick={handleLogout} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">
-                    Logout
-                </button>
             </div>
-            {/* Chat Window */}
             <div className="w-2/3 p-4 flex flex-col">
                 {selectedChat ? (
                     <>
                         <h2 className="text-xl font-semibold">Chat with {selectedChat.name}</h2>
                         <div className="flex-1 bg-white p-4 border rounded overflow-y-auto h-96">
                             {messages.length > 0 ? (
-                              <div className="flex flex-col space-y-2">
-                              {messages.map((msg, index) => (
-                                  <div key={index} className={`flex ${msg.senderId === user.id ? "justify-end" : "justify-start"}`}>
-                                      <div className={`p-2 rounded mb-2 max-w-xs ${msg.senderId === user.id ? "bg-blue-500 text-white" : "bg-gray-300 text-black"}`}>
-                                          <b>{msg.senderId === user.id ? "You" : selectedChat.name}:</b> {msg.message}
-                                      </div>
-                                  </div>
-                              ))}
-                          </div>
-                           
+                                <div className="flex flex-col space-y-2">
+                                    {messages.map((msg, index) => (
+                                        <div key={index} className={`flex ${msg.senderId === user.id ? "justify-end" : "justify-start"}`}>
+                                            <div className={`p-2 rounded mb-2 max-w-xs ${msg.senderId === user.id ? "bg-blue-500 text-white" : "bg-gray-300 text-black"}`}>
+                                                <b>{msg.senderId === user.id ? "You" : selectedChat.name}:</b> {msg.message}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             ) : (
                                 <p>No messages yet</p>
                             )}

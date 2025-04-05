@@ -154,9 +154,14 @@ export default function ProfilePage() {
         <div className="md:col-span-2 space-y-6 scrollable-section">
 
           {/* Activity Section */}
-          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-semibold text-blue-400 mb-3">Activity</h3>
-          </div>
+          <div
+  className="bg-gray-800 rounded-lg shadow-lg p-6 cursor-pointer hover:bg-gray-700 transition"
+  onClick={() => navigate('/activity')}
+>
+  <h3 className="text-xl font-semibold text-blue-400 mb-3">Activity</h3>
+  <p className="text-gray-400">Click to view your activity</p>
+</div>
+
 
           {/* Licenses & Certifications */}
           {profile?.licenses && (
