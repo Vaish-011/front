@@ -33,6 +33,11 @@ import Applynow from './components/Referral/Applynow.js'
 import LeaderBoardPage from './components/User/leaderboard.js';
 import BookmarkedPosts from './components/Bookmark/BookmarkedPosts.js';
 import ApplicationReviewPage from './components/Referral/ApplicationReviewPage.js';
+import Applicantprofile from './components/Referral/Applicantprofile.js'
+import ActivityPage from './components/User/ActivityPage.jsx';
+import { BookmarkProvider, useBookmarks } from "./components/Bookmark/BookmarkContext"; 
+import Sidebar from "./components/Home/Sidebar";
+import Feed from "./components/Home/Feed";
 
 import { useState,useEffect } from "react";
 function App() {
@@ -72,6 +77,7 @@ useEffect(() => {
 }, []);
 
   return (
+    <BookmarkProvider> {/* ✅ Wrap your entire app here */}
     <div className="App">
     <BrowserRouter>
     <Routes>
@@ -108,8 +114,11 @@ useEffect(() => {
     <Route path='/editprofile' element={<EditProfile/>}/>
     <Route path="/referral/applynow/:jobId" element={<Applynow />} />
     <Route path='/leaderboard' element={<LeaderBoardPage/>} />
-    <Route path="/referral/applicationReviewpage/:jobId" element={<ApplicationReviewPage />} />
+    <Route path="/referral/applicationReview" element={<ApplicationReviewPage />} />
     <Route path='/bookmark' element={<BookmarkedPosts/>}/>
+    <Route path='/applicant' element={<Applicantprofile/>}/>
+    <Route path="/activity" element={<ActivityPage />} />
+    
       {/* Route for Resume 1 */}
       <Route path="/resume/1" element={
                             <div className="form-and-resume">
@@ -136,6 +145,7 @@ useEffect(() => {
     </Routes>
     </BrowserRouter>
   </div>
+  </BookmarkProvider>
   );
 }
 
