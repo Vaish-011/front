@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import BookmarkButton from "../Bookmark/BookmarkButton";
 import axios from "axios";
+import { useBookmarks } from "../Bookmark/BookmarkContext"; 
 
 function Feed() {
+  const { bookmarkedPosts, toggleBookmark } = useBookmarks();
   const [posts, setPosts] = useState([]);
   const [expandedPosts, setExpandedPosts] = useState([]);
   const [visibleCount, setVisibleCount] = useState(5);
@@ -33,6 +35,14 @@ function Feed() {
 
   const handleShowMore = () => {
     setVisibleCount((prev) => prev + 5);
+  };
+
+  const handleBookmarkToggle = (postId, isBookmarked) => {
+    if (isBookmarked) {
+      console.log(`Post ${postId} bookmarked!`);
+    } else {
+      console.log(`Post ${postId} removed from bookmarks.`);
+    }
   };
 
   return (
@@ -71,7 +81,7 @@ function Feed() {
 
             {post.photo && (
               <a
-                href={`http://localhost:5000/uploads/${post.photo}`}
+                href={`http://localhost:5000/${post.photo}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -123,13 +133,20 @@ function Feed() {
               <button style={styles.actionButton}>Share</button>
 
               <BookmarkButton
-            postId={101}
-            userId={userId}
-            postTitle={"Post content will be displayed here..."}
-            postContent={"Post content will be displayed here..."}
-            postAuthor={"Author Name"}
-            postTime={"Time Ago"}
-          />
+  postId={post.id}
+  userId={userId}
+  postTitle={post.title || post.name || "Untitled Post"}
+  postContent={post.content}
+  postAuthor={post.name}
+  postTime={new Date(post.createdAt).toLocaleString()}
+  postImage={post.photo ? `http://localhost:5000/${post.photo}` : ""}
+  postVideo={post.video ? `http://localhost:5000/${post.video}` : ""}
+  postArticleLink={post.article ? `http://localhost:5000/${post.article}` : ""}
+  onBookmarkToggle={(isBookmarked) =>
+    handleBookmarkToggle(post.id, isBookmarked)
+  }
+/>
+
             </div>
           </div>
         );
@@ -143,9 +160,9 @@ function Feed() {
         </div>
       )}
     </div>
+    
   );
 }
-
 const styles = {
   feedContainer: {
     width: "100%",

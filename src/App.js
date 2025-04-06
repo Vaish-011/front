@@ -116,9 +116,10 @@ useEffect(() => {
     <Route path='/leaderboard' element={<LeaderBoardPage/>} />
     <Route path="/referral/applicationReview" element={<ApplicationReviewPage />} />
     <Route path='/bookmark' element={<BookmarkedPosts/>}/>
-    <Route path='/applicant' element={<Applicantprofile/>}/>
+    <Route path='/applicant/:applicantID' element={<Applicantprofile/>}/>
     <Route path="/activity" element={<ActivityPage />} />
-    
+    <Route path="/bookmarkfeed" element={<Feed />} />
+
       {/* Route for Resume 1 */}
       <Route path="/resume/1" element={
                             <div className="form-and-resume">
