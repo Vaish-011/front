@@ -10,11 +10,12 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 import { useBookmarks } from '../Bookmark/BookmarkContext'; 
-import BookmarkedPosts from '../Bookmark/BookmarkedPosts'; 
+ 
+import { SiAppium } from "react-icons/si";
 
-const Sidebar = ({ isOpen, toggleSidebar, bookmarkedPosts = [] }) => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
-
+  const { bookmarkedPosts } = useBookmarks();
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -42,16 +43,11 @@ const Sidebar = ({ isOpen, toggleSidebar, bookmarkedPosts = [] }) => {
           <Link to="/bookmark">Bookmark</Link>
         </li>
 
-         {/* Updated: Dynamically render bookmarked posts from context */}
-         {bookmarkedPosts && bookmarkedPosts.length > 0 && (
-          <ul className="bookmarked-list">
-            {bookmarkedPosts.map((post) => (
-              <li key={post.id} onClick={toggleSidebar}>
-                <Link to={`/bookmark/${post.id}`}>🔖 {post.title}</Link>
-              </li>
-            ))}
-          </ul>
-        )}
+         
+        <li onClick={toggleSidebar}>
+          <SiAppium  />
+          <Link to="/referral/applicationReview">LinkUp</Link>
+        </li>
 
         <li onClick={handleLogout}>
           <FaSignOutAlt />

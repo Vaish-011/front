@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaSearch,FaHome, FaUserFriends, FaSuitcase, FaBell, FaComment, FaBars ,FaPlus } from "react-icons/fa";
+import { BiCommentAdd } from "react-icons/bi";
 import Sidebar from "./Sidebar";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +32,9 @@ function Header() {
         </div>
 
         <div className="nav-icons">
+            <div className="icon-container" title="Post Job" onClick={()=>navigate('/referral/form')}>
+            <BiCommentAdd  className="icon-3d" />
+          </div> 
           <div className="icon-container" title="Add Post" onClick={()=>navigate('/post')}>
             <FaPlus className="icon-3d" />
           </div>  

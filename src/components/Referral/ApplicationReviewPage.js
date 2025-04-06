@@ -81,10 +81,12 @@ const ApplicationReviewPage = () => {
                 {group.applicants.map((applicant) => (
                     <div key={applicant.applicant_id} className={styles.applicant}>
                         <p>{applicant.applicant_name}</p>
-                        <button className={styles.viewProfileBtn}
-                        onClick={() => navigate(`/profile/${applicant.applicant_id}`)}
-                        > View Profile
-                        </button>
+                        <button
+    className={styles.viewProfileBtn}
+    onClick={() => navigate(`/applicant/${applicant.applicant_id}`)}
+>
+    View Profile
+</button>
                 </div>
         ))}
         
