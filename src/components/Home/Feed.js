@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
-import BookmarkButton from "../Bookmark/BookmarkButton";
 import axios from "axios";
-import { useBookmarks } from "../Bookmark/BookmarkContext"; 
+import BookmarkButton from "../Bookmark/BookmarkButton";
+import { useBookmarks } from "../Bookmark/BookmarkContext";
 
 function Feed() {
   const { bookmarkedPosts, toggleBookmark } = useBookmarks();
   const [posts, setPosts] = useState([]);
   const [expandedPosts, setExpandedPosts] = useState([]);
   const [visibleCount, setVisibleCount] = useState(5);
-  const userId = 1;
+  const [stats, setStats] = useState({});
+  const [comments, setComments] = useState({});
+  const [newComment, setNewComment] = useState({});
+  const userId = JSON.parse(localStorage.getItem("user"))?.id;
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/posts/post/");
-        setPosts(res.data.reverse());
+        const res = await axios.get("http://localhost:5000/api/posts/post");
+        const reversed = res.data.reverse();
+        setPosts(reversed);
+
+        reversed.forEach((post) => {
+          fetchStats(post.id);
+          fetchComments(post.id);
+        });
       } catch (err) {
         console.error("Error fetching posts:", err);
       }
@@ -22,6 +31,74 @@ function Feed() {
 
     fetchPosts();
   }, []);
+
+  const fetchStats = async (postId) => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/posts/post/${postId}/stats`);
+      setStats((prev) => ({ ...prev, [postId]: res.data }));
+    } catch (err) {
+      console.error("Error fetching stats:", err);
+    }
+  };
+
+  const fetchComments = async (postId) => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/posts/comments/${postId}`);
+      setComments((prev) => ({ ...prev, [postId]: res.data }));
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+    }
+  };
+
+  const handleLike = async (postId) => {
+    try {
+      await axios.post(`http://localhost:5000/api/posts/post/${postId}/like`, { userId });
+
+      // Increment locally
+      setStats((prevStats) => ({
+        ...prevStats,
+        [postId]: {
+          ...prevStats[postId],
+          likes: (prevStats[postId]?.likes || 0) + 1,
+          comments: prevStats[postId]?.comments || 0,
+        },
+      }));
+    } catch (err) {
+      console.error("Error liking post:", err);
+    }
+  };
+  const handleCommentSubmit = async (postId) => {
+    const content = newComment[postId]?.trim();
+    if (!content) return;
+  
+    try {
+      await axios.post(
+        `http://localhost:5000/api/posts/post/${postId}/comment`,
+        {
+          userId, // make sure this is valid (try 13)
+          content,
+        }
+      );
+  
+      setNewComment((prev) => ({ ...prev, [postId]: "" }));
+  
+      // Fetch updated comments after successful submission
+      await fetchComments(postId);
+  
+      // Update stats
+      setStats((prevStats) => ({
+        ...prevStats,
+        [postId]: {
+          ...prevStats[postId],
+          comments: (prevStats[postId]?.comments || 0) + 1,
+          likes: prevStats[postId]?.likes || 0,
+        },
+      }));
+    } catch (err) {
+      console.error("Error adding comment:", err.response?.data || err.message);
+    }
+  };
+  
 
   const toggleReadMore = (postId) => {
     setExpandedPosts((prev) =>
@@ -31,29 +108,22 @@ function Feed() {
     );
   };
 
-  const isExpanded = (postId) => expandedPosts.includes(postId);
-
   const handleShowMore = () => {
     setVisibleCount((prev) => prev + 5);
-  };
-
-  const handleBookmarkToggle = (postId, isBookmarked) => {
-    if (isBookmarked) {
-      console.log(`Post ${postId} bookmarked!`);
-    } else {
-      console.log(`Post ${postId} removed from bookmarks.`);
-    }
   };
 
   return (
     <div style={styles.feedContainer}>
       {posts.slice(0, visibleCount).map((post) => {
         const contentIsLong = post.content && post.content.length > 150;
-        const showFull = isExpanded(post.id);
+        const showFull = expandedPosts.includes(post.id);
         const displayedContent =
           showFull || !contentIsLong
             ? post.content
             : post.content.slice(0, 150) + "...";
+
+        const postStats = stats[post.id] || { likes: 0, comments: 0 };
+        const postComments = comments[post.id] || [];
 
         return (
           <div key={post.id} style={styles.postCard}>
@@ -115,38 +185,62 @@ function Feed() {
               </a>
             )}
 
-            {post.event && (
-              <a
-                href={`http://localhost:5000/${post.event}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <p style={styles.attachmentLink}>
-                  <strong>Event:</strong> {post.event}
-                </p>
-              </a>
-            )}
-
             <div style={styles.postActions}>
-              <button style={styles.actionButton}>Like</button>
-              <button style={styles.actionButton}>Comment</button>
-              <button style={styles.actionButton}>Share</button>
+              <button
+                style={styles.actionButton}
+                onClick={() => handleLike(post.id)}
+              >
+                ❤️ Like ({postStats.likes})
+              </button>
+
+              <button
+                style={styles.actionButton}
+                onClick={() => fetchComments(post.id)}
+              >
+                💬 Comment ({postStats.comments})
+              </button>
 
               <BookmarkButton
-  postId={post.id}
-  userId={userId}
-  postTitle={post.title || post.name || "Untitled Post"}
-  postContent={post.content}
-  postAuthor={post.name}
-  postTime={new Date(post.createdAt).toLocaleString()}
-  postImage={post.photo ? `http://localhost:5000/${post.photo}` : ""}
-  postVideo={post.video ? `http://localhost:5000/${post.video}` : ""}
-  postArticleLink={post.article ? `http://localhost:5000/${post.article}` : ""}
-  onBookmarkToggle={(isBookmarked) =>
-    handleBookmarkToggle(post.id, isBookmarked)
-  }
-/>
+                postId={post.id}
+                userId={userId}
+                postTitle={post.title || post.name || "Untitled Post"}
+                postContent={post.content}
+                postAuthor={post.name}
+                postTime={new Date(post.createdAt).toLocaleString()}
+                postImage={post.photo ? `http://localhost:5000/${post.photo}` : ""}
+                postVideo={post.video ? `http://localhost:5000/${post.video}` : ""}
+                postArticleLink={
+                  post.article ? `http://localhost:5000/${post.article}` : ""
+                }
+                onBookmarkToggle={() => {}}
+              />
+            </div>
 
+            {/* Comment section */}
+            <div style={styles.commentSection}>
+              {postComments.map((c, index) => (
+                <div key={index} style={styles.comment}>
+                  <strong>{c.userName}:</strong> {c.content}
+                </div>
+              ))}
+              <input
+                type="text"
+                placeholder="Write a comment..."
+                value={newComment[post.id] || ""}
+                onChange={(e) =>
+                  setNewComment((prev) => ({
+                    ...prev,
+                    [post.id]: e.target.value,
+                  }))
+                }
+                style={styles.commentInput}
+              />
+              <button
+                style={styles.commentButton}
+                onClick={() => handleCommentSubmit(post.id)}
+              >
+                Submit
+              </button>
             </div>
           </div>
         );
@@ -160,9 +254,9 @@ function Feed() {
         </div>
       )}
     </div>
-    
   );
 }
+
 const styles = {
   feedContainer: {
     width: "100%",
@@ -183,9 +277,6 @@ const styles = {
     backdropFilter: "blur(10px)",
     borderRadius: "15px",
     boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)",
-    transition: "transform 0.3s ease-in-out",
-    width: "100%",
-    marginBottom: "20px",
     color: "#e0e0e0",
   },
   postHeader: {
@@ -211,7 +302,6 @@ const styles = {
   },
   postContent: {
     marginTop: "15px",
-    lineHeight: "1.5",
     fontSize: "16px",
   },
   readMore: {
@@ -238,19 +328,17 @@ const styles = {
   },
   postActions: {
     display: "flex",
-    justifyContent: "space-between",
+    gap: "10px",
     marginTop: "15px",
     flexWrap: "wrap",
-    gap: "10px",
   },
   actionButton: {
-    border: "none",
     padding: "10px 15px",
     borderRadius: "8px",
-    background: "linear-gradient(145deg, #4a17b0, #095793)",
+    background: "#3b3b98",
     color: "white",
+    border: "none",
     cursor: "pointer",
-    transition: "0.3s",
   },
   showMoreButton: {
     border: "none",
@@ -260,7 +348,31 @@ const styles = {
     color: "white",
     fontWeight: "bold",
     cursor: "pointer",
-    transition: "0.3s",
+  },
+  commentSection: {
+    marginTop: "15px",
+  },
+  comment: {
+    marginBottom: "5px",
+    background: "rgba(255, 255, 255, 0.05)",
+    padding: "8px",
+    borderRadius: "6px",
+  },
+  commentInput: {
+    width: "80%",
+    padding: "8px",
+    borderRadius: "6px",
+    marginTop: "10px",
+    marginRight: "10px",
+    border: "1px solid #999",
+  },
+  commentButton: {
+    padding: "8px 12px",
+    borderRadius: "6px",
+    border: "none",
+    background: "#28a745",
+    color: "white",
+    cursor: "pointer",
   },
 };
 
