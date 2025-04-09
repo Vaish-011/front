@@ -26,11 +26,6 @@ function Header() {
 
         <h1 className="logo">ConnectHive</h1>
 
-        <div className="search-bar">
-          <FaSearch className="search-icon" />
-          <input type="text" placeholder="Search" className="input-3d" />
-        </div>
-
         <div className="nav-icons">
             <div className="icon-container" title="Post Job" onClick={()=>navigate('/referral/form')}>
             <BiCommentAdd  className="icon-3d" />
