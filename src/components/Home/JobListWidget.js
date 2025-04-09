@@ -32,7 +32,7 @@ const JobListWidget = () => {
               <p><strong>Location : </strong> {job.location}</p>
               <p><strong>Skills : </strong> {job.skills}</p>
               <p><strong>Experience : </strong> {job.experience} years</p>
-              <p><strong>Salary : </strong> {jobs.salary}</p>
+              <p><strong>Salary : </strong> {job.salary}</p>
               <p><strong>Employeement Type : </strong> {job.employment_type}</p>
               <p><strong>Description : </strong> {job.description}</p>
               <div className={styles.buttonContainer}>
