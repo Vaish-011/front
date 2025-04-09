@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 import styles from './styles/ApplicationReview.module.css'; 
 
 const ApplicationReviewPage = () => {
@@ -36,6 +36,7 @@ const ApplicationReviewPage = () => {
                             acc[key] = {
                                 company_name: app.company_name,
                                 job_title: app.job_title,
+                                job_id:app.job_id,
                                 applicants: []
                             };
                         }
@@ -87,7 +88,13 @@ const ApplicationReviewPage = () => {
 >
     View Profile
 </button>
-                </div>
+<Link
+    to = {`/referral-details/${applicant.applicant_id}/${group.job_id}`}
+    className={styles.requestBtn}
+>
+    Requested Referral
+</Link>
+            </div>
         ))}
         
         </div>

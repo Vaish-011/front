@@ -1,0 +1,44 @@
+.container {
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    background: #f4f4f4;
+    border-radius: 8px;
+  }
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .detailBox {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  
+  .detailBox p {
+    margin: 0.5rem 0;
+  }
+  
+  .backBtn {
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .backBtn:hover {
+    background-color: #0056b3;
+  }
+  
+  .loading, .error {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+  }
+  

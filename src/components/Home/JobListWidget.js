@@ -44,7 +44,7 @@ const JobListWidget = () => {
                 </button>
                 <button 
                    className={styles.referralButton}
-                   onClick={() => navigate(`/referral/requestform/`)}
+                   onClick={() => navigate(`/referral/requestform/${job.id}`)}
                 >
                   Request Referral
                 </button>

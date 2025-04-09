@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from './styles/referral.module.css';
+import { useNavigate, useParams } from "react-router-dom";
 
-const RequestReferralForm = ({ jobId, userId, closeModal , handleReferralSubmit }) => {
+const RequestReferralForm = ({closeModal , handleReferralSubmit }) => {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -11,6 +12,16 @@ const RequestReferralForm = ({ jobId, userId, closeModal , handleReferralSubmit 
     });
 
     const [uploadError, setUploadError] = useState(null);
+    const {jobId} = useParams();
+    const [userId , setUserId] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if(storedUser && storedUser.id){
+            setUserId(storedUser.id);
+        }
+    } , []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,6 +35,11 @@ const RequestReferralForm = ({ jobId, userId, closeModal , handleReferralSubmit 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setUploadError(null);
+        if(!jobId || !userId){
+            console.error("Job ID or User ID is undefined : " , jobId , userId);
+            alert("Error: Job ID or User ID is missing");
+            return;
+        }
         const formDataToSend = new FormData();
         formDataToSend.append("job_id", jobId);
         formDataToSend.append("user_id", userId);
@@ -39,8 +55,14 @@ const RequestReferralForm = ({ jobId, userId, closeModal , handleReferralSubmit 
             });
             if (response.status === 200) {
                 alert("Referral request submitted successfully!");
-                closeModal();
-                handleReferralSubmit(jobId, userId);
+                if(closeModal){
+                    closeModal();
+                }else{
+                    navigate(-1);
+                }
+                if(handleReferralSubmit){
+                    handleReferralSubmit(jobId , userId);
+                }
             } else {
                 setUploadError("Failed to submit referral request");
                 alert("Failed to submit referral request!");
@@ -63,7 +85,8 @@ const RequestReferralForm = ({ jobId, userId, closeModal , handleReferralSubmit 
                 <input type="file" name="resume" onChange={handleFileChange} required className={styles.fileInput} />
                 <button type="submit" className={styles.submitButton}>Submit Request</button>
             </form>
-            <button onClick={closeModal} className={styles.cancelButton}>Cancel</button>
+           {closeModal && <button onClick={closeModal} className={styles.cancelButton}>Cancel</button>}
+           {!closeModal && <button onClick={() => navigate(-1)} className={styles.cancelButton}>Go Back</button>}
         </div>
     );
 };
