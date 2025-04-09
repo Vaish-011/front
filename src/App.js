@@ -15,7 +15,6 @@ import RequestReferralForm from './components/Referral/RequestReferralForm.js';
 import Feedback from './components/Feedback/index.js';
 import React from "react";
 import ConnectPage from './components/connection/index.js';
-import SearchUsers from "./components/chats/SearchUsers.js";
 import InvitationPage from './components/connection/invitation.js';
 import TodaysTasks from './components/Tasklist/TodaysTasks.jsx';
 import PendingTasks from './components/Tasklist/PendingTasks.jsx';
@@ -35,15 +34,15 @@ import BookmarkedPosts from './components/Bookmark/BookmarkedPosts.js';
 import ApplicationReviewPage from './components/Referral/ApplicationReviewPage.js';
 import Applicantprofile from './components/Referral/Applicantprofile.js'
 import ActivityPage from './components/User/ActivityPage.jsx';
-import { BookmarkProvider, useBookmarks } from "./components/Bookmark/BookmarkContext"; 
-import Sidebar from "./components/Home/Sidebar";
+import { BookmarkProvider} from "./components/Bookmark/BookmarkContext"; 
+import ReferralDetailsPage  from './components/Referral/ReferralDetailsPage.js';
 import Feed from "./components/Home/Feed";
 
 import { useState,useEffect } from "react";
 function App() {
   const [receiver, setReceiver] = useState(null); // Selected user for chat
-  const [loading1, setLoading1] = useState(true); // State for useFormHandlers (assuming for the first form)
-  const [loading2, setLoading2] = useState(true); // State for useFormHandlers2 (assuming for the second form)
+  const [, setLoading1] = useState(true); // State for useFormHandlers (assuming for the first form)
+  const [, setLoading2] = useState(true); // State for useFormHandlers2 (assuming for the second form)
   // Form handler for resume 1 (using useFormHandlers)
   const {
     formData: formData1,
@@ -81,7 +80,7 @@ useEffect(() => {
     <div className="App">
     <BrowserRouter>
     <Routes>
-        <Route path='/' element={<HomePage/>}/>
+        <Route path='/homepage' element={<HomePage/>}/>
         <Route path='/home' element={<Home/>}/>
     </Routes>
     <Routes>
@@ -91,15 +90,14 @@ useEffect(() => {
   element={<Chat receiver={receiver} setReceiver={setReceiver} />} 
 />
 
-    <Route path='/login' element={<Login/>}/>
+    <Route path='/' element={<Login/>}/>
     <Route path='/user' element={<ProfilePage/>}/>
     <Route path='/cv' element={<CV/>}/>
     <Route path='/tasklist' element={<Tasklist/>}/>
     <Route path='/referral' element={<Referral/>}/>
     <Route path="/referral/form" element={<JobForm />} />
     <Route path="/referral/joblist" element={<JobList />} />
-    <Route path="/referral/requestform" element={<RequestReferralForm />} />
-
+    <Route path="/referral-details/:applicant_id/:job_id" element={<ReferralDetailsPage />} />
     <Route path='/connect' element={<ConnectPage/>}/>
     <Route path='/feedback' element={<Feedback/>}/>
     <Route path='/invitation' element={<InvitationPage/>}/>
@@ -115,6 +113,7 @@ useEffect(() => {
     <Route path="/referral/applynow/:jobId" element={<Applynow />} />
     <Route path='/leaderboard' element={<LeaderBoardPage/>} />
     <Route path="/referral/applicationReview" element={<ApplicationReviewPage />} />
+    <Route path="/referral/requestform/:jobId" element={<RequestReferralForm />} />
     <Route path='/bookmark' element={<BookmarkedPosts/>}/>
     <Route path='/applicant/:applicantID' element={<Applicantprofile/>}/>
     <Route path="/activity" element={<ActivityPage />} />

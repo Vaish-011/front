@@ -171,11 +171,21 @@ ul {
 li {
   margin: 10px 0;
 }
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* change to center for vertical centering */
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f5f5f5;
+}
+
+
 
 /* Feed Container (with scrollable posts) */
 .feed-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   margin: 20px auto;
   padding: 0 20px;
   display: flex;
@@ -185,6 +195,23 @@ li {
   overflow-y: auto; /* Enable vertical scrolling */
   position: absolute;
   top:90px;
+}
+
+/* Feed Container (with scrollable posts) */
+.bookmark-feed-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  /* Allow the feed to scroll */
+  max-height: 80vh; /* Adjust the height of the scrollable area */
+  overflow-y: auto; /* Enable vertical scrolling */
+  position: absolute;
+  color:white;
+  top:50px;
+  left:400px;
 }
 /* Enhanced Card Styling */
 .card {

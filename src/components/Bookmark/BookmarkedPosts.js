@@ -8,8 +8,8 @@ const BookmarkedPosts = () => {
   const { bookmarkedPosts } = useBookmarks();
 
   return (
-    <div className="feed-container">
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Bookmarked Posts</h2>
+    <div className="bookmark-feed-container">
+      <h2 style={{ textAlign: "center", marginBottom: "20px",color:"purple"}}>Bookmarked Posts</h2>
 
       {bookmarkedPosts.length === 0 ? (
         <p style={{ textAlign: "center", fontStyle: "italic" }}>No bookmarks yet.</p>

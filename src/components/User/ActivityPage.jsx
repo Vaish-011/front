@@ -28,6 +28,22 @@ export default function ActivityPage() {
     fetchUserPosts();
   }, [userId]);
 
+
+  
+  // 🗑️ Handle delete post
+  const handleDelete = async (postId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${API_BASE}/post/${postId}`);
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <h1 className="text-3xl font-bold text-blue-400 mb-6">Your Activity</h1>
@@ -94,6 +110,15 @@ export default function ActivityPage() {
                     📢 View Event File
                   </a>
                 )}
+
+
+<button
+                  onClick={() => handleDelete(post.id)}
+                  className="mt-2 text-red-500 hover:underline text-sm"
+                >
+                  Delete Post
+                </button>
+                
               </div>
             ))}
           </div>
