@@ -76,7 +76,7 @@ const JobForm = ({ fetchJobs }) => {
             navigate("/referral/joblist");
         } catch (error) {
             console.error("Axios Error:", error.response?.data || error.message);
-            alert(`Error: ${error.response?.data?.error || "Server Error"}`);
+            // alert(`Error: ${error.response?.data?.error || "Server Error"}`);
         }
     };
 
