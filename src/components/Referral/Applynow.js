@@ -65,7 +65,7 @@ const ApplyNowForm = ({ closeModal}) => {
             closeModal();
         } catch(error) {
             console.error("Error in submitting the application : " , error);
-            alert("Application failed");
+            // alert("Application failed");
         }
     };
 
