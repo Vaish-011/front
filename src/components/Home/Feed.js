@@ -34,7 +34,10 @@ function Feed() {
 
   const fetchStats = async (postId) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/posts/post/${postId}/stats`);
+      const res = await axios.get(
+        `http://localhost:5000/api/posts/post/${postId}/stats`,
+        { params: { userId } }
+      );
       setStats((prev) => ({ ...prev, [postId]: res.data }));
     } catch (err) {
       console.error("Error fetching stats:", err);
@@ -43,7 +46,9 @@ function Feed() {
 
   const fetchComments = async (postId) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/posts/comments/${postId}`);
+      const res = await axios.get(
+        `http://localhost:5000/api/posts/comments/${postId}`
+      );
       setComments((prev) => ({ ...prev, [postId]: res.data }));
     } catch (err) {
       console.error("Error fetching comments:", err);
@@ -52,40 +57,37 @@ function Feed() {
 
   const handleLike = async (postId) => {
     try {
-      await axios.post(`http://localhost:5000/api/posts/post/${postId}/like`, { userId });
+      await axios.post(`http://localhost:5000/api/posts/post/${postId}/like`, {
+        userId,
+      });
 
-      // Increment locally
-      setStats((prevStats) => ({
-        ...prevStats,
-        [postId]: {
-          ...prevStats[postId],
-          likes: (prevStats[postId]?.likes || 0) + 1,
-          comments: prevStats[postId]?.comments || 0,
-        },
+      const res = await axios.get(
+        `http://localhost:5000/api/posts/post/${postId}/stats`,
+        { params: { userId } }
+      );
+
+      setStats((prev) => ({
+        ...prev,
+        [postId]: res.data,
       }));
     } catch (err) {
-      console.error("Error liking post:", err);
+      console.error("Error toggling like:", err);
     }
   };
+
   const handleCommentSubmit = async (postId) => {
     const content = newComment[postId]?.trim();
     if (!content) return;
-  
+
     try {
-      await axios.post(
-        `http://localhost:5000/api/posts/post/${postId}/comment`,
-        {
-          userId, // make sure this is valid (try 13)
-          content,
-        }
-      );
-  
+      await axios.post(`http://localhost:5000/api/posts/post/${postId}/comment`, {
+        userId,
+        content,
+      });
+
       setNewComment((prev) => ({ ...prev, [postId]: "" }));
-  
-      // Fetch updated comments after successful submission
       await fetchComments(postId);
-  
-      // Update stats
+
       setStats((prevStats) => ({
         ...prevStats,
         [postId]: {
@@ -98,7 +100,6 @@ function Feed() {
       console.error("Error adding comment:", err.response?.data || err.message);
     }
   };
-  
 
   const toggleReadMore = (postId) => {
     setExpandedPosts((prev) =>
@@ -122,7 +123,7 @@ function Feed() {
             ? post.content
             : post.content.slice(0, 150) + "...";
 
-        const postStats = stats[post.id] || { likes: 0, comments: 0 };
+        const postStats = stats[post.id] || { likes: 0, comments: 0, userLiked: false };
         const postComments = comments[post.id] || [];
 
         return (
@@ -187,10 +188,13 @@ function Feed() {
 
             <div style={styles.postActions}>
               <button
-                style={styles.actionButton}
+                style={{
+                  ...styles.actionButton,
+                  backgroundColor: postStats.userLiked ? "#e74c3c" : "#3b3b98",
+                }}
                 onClick={() => handleLike(post.id)}
               >
-                ❤️ Like ({postStats.likes})
+                {postStats.userLiked ? "❤ Unlike" : "🤍 Like"} ({postStats.likes})
               </button>
 
               <button
@@ -216,7 +220,6 @@ function Feed() {
               />
             </div>
 
-            {/* Comment section */}
             <div style={styles.commentSection}>
               {postComments.map((c, index) => (
                 <div key={index} style={styles.comment}>
@@ -365,6 +368,7 @@ const styles = {
     marginTop: "10px",
     marginRight: "10px",
     border: "1px solid #999",
+    color: "black",
   },
   commentButton: {
     padding: "8px 12px",
