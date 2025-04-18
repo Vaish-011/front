@@ -106,7 +106,7 @@ const markCompleted = useCallback((taskId) => {
           <div key={task.task_id} className="today-task-item">
             <p><strong>{task.task_name}</strong></p>
             <p>{new Date(task.task_date).toLocaleDateString()} | {task.task_time}</p>
-            {task.remainder && <p><FaBell /> Reminder Set</p>}
+            {/* {task.remainder && <p><FaBell /> Reminder Set</p>} */}
             <div className="task-actions">
               <button className='mark' onClick={() => markCompleted(task.task_id)}>
                 <FaCheck /> Mark Completed

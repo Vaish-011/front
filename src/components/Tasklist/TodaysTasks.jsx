@@ -10,7 +10,7 @@ function TodaysTasks() {
         // const [token, setToken] = useState("");
         const [date , setDate] = useState(new Date());
         const [time , setTime] = useState('');
-        const [remainder , setRemainder] = useState(false);
+        // const [remainder , setRemainder] = useState(false);
         const [showCalendar, setShowCalendar] = useState(false);
         const [editIndex, setEditIndex] = useState(null); 
         const [showTimePicker, setShowTimePicker] = useState(false);
@@ -72,7 +72,7 @@ function TodaysTasks() {
             const taskToEdit = tasks[index];
             setDate(taskToEdit.task_date ? new Date(taskToEdit.task_date) : new Date());
             setTime(taskToEdit.task_time);
-            setRemainder(taskToEdit.remainder);
+            // setRemainder(taskToEdit.remainder);
             setEditIndex(index);
         };
 
@@ -120,7 +120,7 @@ function TodaysTasks() {
                                 month: 'long',
                                 day: 'numeric',
                             })} | {task.task_time}</p>
-                        {task.remainder && <p><FaBell /> Reminder Set</p>}
+                        {/* {task.remainder && <p><FaBell /> Reminder Set</p>} */}
                         <div className="task-actions">
                             <button onClick={() => handleEdit(index)}><FaEdit /></button> 
                             <button onClick={() => handleDelete(index)}><FaTrash /></button> 

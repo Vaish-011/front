@@ -44,7 +44,7 @@ function CompletedTasks() {
           <div key={task.task_id} className="today-task-item">
             <p><strong>{task.task_name}</strong></p>
             <p>{new Date(task.task_date).toLocaleDateString()} | {task.task_time}</p>
-            {task.remainder && <p>Reminder Set</p>}
+            {/* {task.remainder && <p>Reminder Set</p>} */}
             <div className="task-actions">
               <button onClick={() => handleDelete(task.task_id)}>
                 <FaTrash /> Delete

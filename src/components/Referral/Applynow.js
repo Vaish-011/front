@@ -9,7 +9,7 @@ const ApplyNowForm = ({ closeModal}) => {
     const [userId , setUserId] = useState("");
     const {jobId} = useParams();
     const [formData, setFormData] = useState({
-        fullName: "",
+        full_name: "",
         email: "",
         phone: "",
         linkedin: "",
@@ -73,7 +73,7 @@ const ApplyNowForm = ({ closeModal}) => {
         <div className={styles.modal}>
             <h2 className={styles.title}>Apply for Job</h2>
             <form onSubmit={handleSubmit} className={styles.form}>
-                <input type="text" name="fullName" placeholder="Full Name" onChange={handleChange} required className={styles.input}/>
+                <input type="text" name="full_name" placeholder="Full Name" onChange={handleChange} required className={styles.input}/>
                 <input type="email" name="email" placeholder="Email" onChange={handleChange} required className={styles.input}/>
                 <input type="text" name="phone" placeholder="Phone Number" onChange={handleChange} required className={styles.input}/>
                 <input type="url" name="linkedin" placeholder="LinkedIn Profile" onChange={handleChange} className={styles.input}/>

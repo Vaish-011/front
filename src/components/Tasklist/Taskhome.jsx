@@ -16,7 +16,7 @@ function Taskhome() {
     const [token, setToken] = useState("");
     const [date , setDate] = useState(new Date());
     const [time , setTime] = useState('');
-    const [remainder , setRemainder] = useState(false);
+    // const [remainder , setRemainder] = useState(false);
     const [showCalendar, setShowCalendar] = useState(false);
     const [editIndex, setEditIndex] = useState(null); 
     const [showTimePicker, setShowTimePicker] = useState(false);
@@ -109,7 +109,7 @@ const handleSubmit = async (e) => {
           task_name: tasks, 
           task_date: formattedDate,
           task_time: time,
-          remainder,
+          // remainder,
           client_id: user.id
       };
 
@@ -138,7 +138,7 @@ const handleSubmit = async (e) => {
         
         setTasks('');
         setTime('')
-        setRemainder(false);
+        // setRemainder(false);
         setDate(new Date());
       }
   
@@ -148,7 +148,7 @@ const handleSubmit = async (e) => {
         setTasks(taskToEdit.task_name);
         setDate(taskToEdit.task_date ? new Date(taskToEdit.task_date) : new Date());
         setTime(taskToEdit.task_time);
-        setRemainder(taskToEdit.remainder);
+        // setRemainder(taskToEdit.remainder);
         setEditIndex(index);
     };
 
@@ -239,11 +239,11 @@ const handleSubmit = async (e) => {
                 )}
               </div>
       
-                <div className={`input-icon ${remainder ? "active" : ""}`} onClick={() => setRemainder(!remainder)}>
+                {/* <div className={`input-icon ${remainder ? "active" : ""}`} onClick={() => setRemainder(!remainder)}>
                   <button className="remainder-button">
                     <FaBell /> Remainder
                   </button>
-                </div>
+                </div> */}
       
                 <div className="input-icon">
                   <button className="add-task-button" onClick={handleSubmit}> Add Task </button>
@@ -263,7 +263,7 @@ const handleSubmit = async (e) => {
                 />
                 <p><strong>{task.task_name}</strong></p>
                 <p>{new Date(task.task_date).toLocaleDateString()} | {task.task_time}</p>
-                {task.remainder && <p><FaBell/> Reminder Set</p>}
+                {/* {task.remainder && <p><FaBell/> Reminder Set</p>} */}
                 <div className="task-actions">
                   <button onClick={() => handleEdit(index)}><FaEdit /></button>
                   <button onClick={() => handleDelete(index)}><FaTrash /></button>

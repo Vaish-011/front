@@ -43,20 +43,42 @@ function UpcomingTasks() {
         setEditIndex(index);
     };
 
+    // const handleDelete = (index) => {
+    //     const taskId = tasks[index].task_id;
+    //     const client_id = localStorage.getItem("client_id");
+    //     if (!client_id) {
+    //         console.error("Client ID not found");
+    //         return;
+    //     }
+    //     axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`)
+    //         .then(() => {
+    //             const filteredTasks = taskList.filter((_, i) => i !== index);
+    //             setTasks(filteredTasks);
+    //             setTaskList(filteredTasks);
+    //         })
+    //         .catch(err => console.error("Error deleting the task:", err));
+    // };
     const handleDelete = (index) => {
         const taskId = tasks[index].task_id;
-        const client_id = localStorage.getItem("client_id");
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const client_id = storedUser ? storedUser.id : null;
+
         if (!client_id) {
-            console.error("Client ID not found");
+            console.error("Client ID not found in local storage");
             return;
         }
-        axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`)
-            .then(() => {
-                const filteredTasks = taskList.filter((_, i) => i !== index);
-                setTasks(filteredTasks);
-                setTaskList(filteredTasks);
-            })
-            .catch(err => console.error("Error deleting the task:", err));
+
+        axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`, {
+            data: { client_id: client_id }, 
+        })
+        .then(() => {
+            const updatedTasks = tasks.filter((_, i) => i !== index);
+            setTasks(updatedTasks);
+            console.log("Task deleted successfully");
+        })
+        .catch(err => {
+            console.error("Error deleting the task:", err);
+        });
     };
 
     return (
@@ -68,7 +90,7 @@ function UpcomingTasks() {
                     <div key={index} className="today-task-item">
                         <p><strong>{task.task_name}</strong></p>
                         <p>{new Date(task.task_date).toLocaleDateString()} | {task.task_time}</p>
-                        {task.remainder && <p><FaBell /> Reminder Set</p>}
+                        {/* {task.remainder && <p><FaBell /> Reminder Set</p>} */}
                         <div className="task-actions">
                             <button onClick={() => handleEdit(index)}><FaEdit /></button> 
                             <button onClick={() => handleDelete(index)}><FaTrash /></button> 
