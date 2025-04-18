@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
-import "./stylesnotification.css"; // Ensure it matches LinkedIn style
+import "./stylesnotification.css"; 
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
