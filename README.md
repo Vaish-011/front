@@ -1,70 +1,102 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ConnectHive
 
-## Available Scripts
+🚀 **ConnectHive** — A next-generation professional networking platform designed to help professionals, students, and organizations connect, collaborate, and unlock career opportunities.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🌟 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 🌐 **Professional Profiles**  
+  Build rich, customizable profiles to showcase your skills, experiences, and achievements.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 🤝 **Networking & Collaboration**  
+  Connect with peers, mentors, and companies to foster meaningful professional relationships.
 
-### `npm test`
+- 💬 **Messaging & Communication**  
+  Built-in chat and messaging tools for seamless communication.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 🔍 **Advanced Search & Matchmaking**  
+  Find people, opportunities, and collaborations using AI-driven recommendations.
 
-### `npm run build`
+- 📈 **Job Posting, Applying and Referral**  
+  Access job boards, apply for jobs and ask for referrals from industry leaders
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 🏢 **LeaderBoard**  
+  LeaderBoard based on the posts added.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 🌟 **Extra Functionalities**  
+  Including structured database interactions, dashboards, recommendation systems, and more.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🏗️ Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Frontend:** React.js / Tailwind CSS
+- **Backend:** Node.js / Express.js 
+- **Database:** MySQL
+- **Authentication:** JWT  
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📦 Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1️⃣ **Clone the repository**
 
-## Learn More
+```bash
+git clone https://github.com/Vaish-011/front.git
+git clone https://github.com/Vaish-011/connectbackend.git
+cd connecthive
+````
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2️⃣ **Install dependencies**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+# For frontend
+cd front
+npm install
 
-### Code Splitting
+# For backend
+cd connectbackend
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3️⃣ **Set up environment variables**
 
-### Analyzing the Bundle Size
+Create a `.env` file in the root directories (both frontend and backend) with the necessary API keys, database URLs, and secrets.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+4️⃣ **Run the project**
 
-### Making a Progressive Web App
+```bash
+# Run backend
+cd connectbackend
+npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Run frontend
+cd front
+npm start
+```
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## ✨ Contributing
 
-### Deployment
+We welcome contributions! Please follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m 'Add your message'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a Pull Request
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## 📫 Contact
+
+For feedback, suggestions, or collaborations, reach out to:
+
+* **Project Owner:** Muskan Tomar, Rachita Laad, Rasika Kale, Janhavi Patil, Viditi Joshi
+* **Email:** [muskantomar43@gmail.com](mailto:muskantomar43@gmail.com) 
+* **GitHub:** [@Vaish-011](https://github.com/Vaish-011)
+
