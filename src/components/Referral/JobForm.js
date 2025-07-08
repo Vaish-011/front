@@ -6,7 +6,7 @@ import styles from "./styles/dark-theme.module.css";
 const JobForm = ({ fetchJobs }) => {
     const navigate = useNavigate();
     const location = useLocation();
-
+    const API_URL = "http://localhost:5000"; 
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
 
@@ -61,9 +61,9 @@ const JobForm = ({ fetchJobs }) => {
         try {
             let response;
             if (editing) {
-                response = await axios.put(`http://localhost:5000/api/jobs/update/${editId}`, job);
+                response = await axios.put(`${API_URL}/api/jobs/update/${editId}`, job);
             } else {
-                response = await axios.post("http://localhost:5000/api/jobs/add", job);
+                response = await axios.post(`${API_URL}/api/jobs/add`, job);
             }
             alert(response.data.message);
             setJob({ 

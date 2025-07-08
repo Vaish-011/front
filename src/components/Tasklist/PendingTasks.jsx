@@ -6,6 +6,7 @@ import './TodaysTasks.css';
 function PendingTasks({ onTaskCompletedUpdate }) {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState(null);
+  const API_URL = "http://localhost:5000"; 
 
   
   // fetching pending tasks here.....
@@ -15,7 +16,7 @@ function PendingTasks({ onTaskCompletedUpdate }) {
         const clientId = storedUser.id;
         console.log("PendingTasks clientId (from localStorage user.id):", clientId);
 
-        axios.get(`http://localhost:5000/api/tasks/task/pending/${clientId}`)
+        axios.get(`${API_URL}/api/tasks/task/pending/${clientId}`)
             .then(response => {
                 console.log("PendingTasks API response:", response.data);
                 setTasks(response.data);
@@ -30,25 +31,7 @@ function PendingTasks({ onTaskCompletedUpdate }) {
     }
 }, []);
 
-// const markCompleted = useCallback((taskId) => {
-//   if (!user || !user.id) return;
-//   axios.put(`http://localhost:5000/api/tasks/task/complete/${taskId}`, { client_id: user.id })
-//       .then(() => {
-//           axios.get(`http://localhost:5000/api/tasks/task/pending/${user.id}`)
-//               .then(response => setTasks(response.data))
-//               .catch(error => console.error("Error refetching pending tasks:", error));
 
-//           axios.get(`http://localhost:5000/api/tasks/task/completed/${user.id}`)
-//               .then(response => {
-//                   console.log("Completed tasks after mark:", response.data);
-//                   if (onTaskCompletedUpdate) {
-//                       onTaskCompletedUpdate(response.data); 
-//                   }
-//               })
-//               .catch(error => console.error("Error fetching completed tasks:", error));
-//       })
-//       .catch(error => console.error("Error updating task:", error));
-// }, [user, onTaskCompletedUpdate]);
 
 const markCompleted = useCallback((taskId) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -56,13 +39,13 @@ const markCompleted = useCallback((taskId) => {
 
   if (!clientId) return;
 
-  axios.put(`http://localhost:5000/api/tasks/task/complete/${taskId}`, { client_id: clientId })
+  axios.put(`${API_URL}/api/tasks/task/complete/${taskId}`, { client_id: clientId })
       .then(() => {
-          axios.get(`http://localhost:5000/api/tasks/task/pending/${clientId}`)
+          axios.get(`${API_URL}/api/tasks/task/pending/${clientId}`)
               .then(response => setTasks(response.data))
               .catch(error => console.error("Error refetching pending tasks:", error));
 
-          axios.get(`http://localhost:5000/api/tasks/task/completed/${clientId}`)
+          axios.get(`${API_URL}/api/tasks/task/completed/${clientId}`)
               .then(response => {
                   console.log("Completed tasks after mark:", response.data);
                   if (onTaskCompletedUpdate) {
@@ -74,23 +57,12 @@ const markCompleted = useCallback((taskId) => {
       .catch(error => console.error("Error updating task:", error));
 }, [onTaskCompletedUpdate]);
 
-  // fetching delete tasks here.....
-  // const handleDelete = (taskId) => {
-  //   const clientId = localStorage.getItem("client_id");
-  //   if(!clientId) return;
-
-  //   axios.delete(`http://localhost:5000/api/tasks/task/${taskId}` , {data : {client_id : clientId}})
-  //     .then(() => {
-  //       setTasks(tasks.filter(task => task.task_id !== taskId));
-  //     })
-  //     .catch(err => console.error("Error deleting task:", err));
-  // };
-
+ 
   const handleDelete = (taskId) => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
     const clientId = loggedInUser?.id;
     if (!clientId) return;
-    axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`, { data: { client_id: clientId } })
+    axios.delete(`${API_URL}/api/tasks/task/${taskId}`, { data: { client_id: clientId } })
         .then(() => {
             setTasks(tasks.filter(task => task.task_id !== taskId));
         })

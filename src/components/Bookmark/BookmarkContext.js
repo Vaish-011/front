@@ -3,6 +3,8 @@ import axios from "axios";
 
 const BookmarkContext = createContext();
 
+const API_URL = "http://localhost:5000"; 
+
 export const BookmarkProvider = ({ children }) => {
   const [user, setUser] = useState(null);
     const [token, setToken] = useState("");
@@ -28,7 +30,7 @@ const userId = user?.id;
 
     const fetchBookmarks = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/bookmarks/${userId}`);
+        const res = await axios.get(`${API_URL}/api/bookmarks/${userId}`);
         setBookmarkedPosts(res.data);
       } catch (error) {
         console.error("Error fetching bookmarks:", error);
@@ -43,7 +45,7 @@ const userId = user?.id;
     if (!userId) return; // If no userId, do nothing
 
     try {
-      const res = await axios.post(`http://localhost:5000/api/bookmarks/toggle`, {
+      const res = await axios.post(`${API_URL}/api/bookmarks/toggle`, {
         user_id: userId, // Use passed userId
         post_id: post.post_id
       });

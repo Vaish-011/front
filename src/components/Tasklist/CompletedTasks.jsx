@@ -6,10 +6,11 @@ import './TodaysTasks.css';
 function CompletedTasks() {
   const [tasks, setTasks] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
+  const API_URL = "http://localhost:5000"; 
 
     useEffect(() => {
         if (user && user.id) {
-            axios.get(`http://localhost:5000/api/tasks/task/completed/${user.id}`)
+            axios.get(`${API_URL}/api/tasks/task/completed/${user.id}`)
                 .then(response => setTasks(response.data))
                 .catch(error => console.error("Error fetching completed tasks:", error));
         }
@@ -26,7 +27,7 @@ function CompletedTasks() {
         return;
     }
 
-    axios.delete(`http://localhost:5000/api/tasks/task/${taskId}`, {
+    axios.delete(`${API_URL}/api/tasks/task/${taskId}`, {
         data: { client_id: clientId }
     })
         .then(() => {

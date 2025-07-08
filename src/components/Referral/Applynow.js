@@ -8,6 +8,7 @@ const ApplyNowForm = ({ closeModal}) => {
     const [token, setToken] = useState("");
     const [userId , setUserId] = useState("");
     const {jobId} = useParams();
+    const API_URL = "http://localhost:5000";
     const [formData, setFormData] = useState({
         full_name: "",
         email: "",
@@ -55,8 +56,7 @@ const ApplyNowForm = ({ closeModal}) => {
         console.log("Job ID:", jobId);
         console.log("FormData:", form);
         try{
-            console.log("Axios URL:", "http://localhost:5000/api/application/apply");
-            await axios.post("http://localhost:5000/api/application/apply" , form , {
+            await axios.post(`${API_URL}/api/application/apply` , form , {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

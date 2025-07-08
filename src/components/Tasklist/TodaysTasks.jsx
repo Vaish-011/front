@@ -6,11 +6,8 @@ import axios from 'axios';
 function TodaysTasks() {
     const [tasks, setTasks] = useState([]);
         const [taskList, setTaskList] = useState([]);
-        // const [user, setUser] = useState(null);
-        // const [token, setToken] = useState("");
         const [date , setDate] = useState(new Date());
         const [time , setTime] = useState('');
-        // const [remainder , setRemainder] = useState(false);
         const [showCalendar, setShowCalendar] = useState(false);
         const [editIndex, setEditIndex] = useState(null); 
         const [showTimePicker, setShowTimePicker] = useState(false);
@@ -19,7 +16,7 @@ function TodaysTasks() {
         const [showUpcomingTasks, setShowUpcomingTasks] = useState(false);
         const [userId, setUserId] = useState(null);
         const [token, setToken] = useState(null);
-
+        const API_URL = "http://localhost:5000"; 
         
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -72,14 +69,13 @@ function TodaysTasks() {
             const taskToEdit = tasks[index];
             setDate(taskToEdit.task_date ? new Date(taskToEdit.task_date) : new Date());
             setTime(taskToEdit.task_time);
-            // setRemainder(taskToEdit.remainder);
             setEditIndex(index);
         };
 
     const handleDelete = async (index) => {
         const taskId = tasks[index].task_id;
         try{
-         await axios.delete(`http://localhost:5000/api/tasks/task/${taskId}` , { headers: { Authorization: `Bearer ${token}` },
+         await axios.delete(`${API_URL}/api/tasks/task/${taskId}` , { headers: { Authorization: `Bearer ${token}` },
             data: { client_id: userId }
 
          });

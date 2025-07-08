@@ -8,11 +8,12 @@ const Feedback = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState("");
   const [feedbackList, setFeedbackList] = useState([]); // Store all feedbacks
-
+  const API_URL = "http://localhost:5000"; 
   useEffect(() => {
+    
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const storedToken = localStorage.getItem("token");
-
+    
     if (storedUser && storedToken) {
       setUser(storedUser);
       setToken(storedToken);
@@ -23,7 +24,7 @@ const Feedback = () => {
 
   const fetchFeedbacks = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/feedback/feed");
+      const response = await fetch(`${API_URL}/api/feedback/feed`);
       const data = await response.json();
       setFeedbackList(data); // Update state with feedbacks
     } catch (error) {
@@ -41,7 +42,7 @@ const Feedback = () => {
     const feedbackData = { userId: user.id, rating, message };
 
     try {
-      const response = await fetch("http://localhost:5000/api/feedback/feed", {
+      const response = await fetch(`${API_URL}/api/feedback/feed`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(feedbackData),

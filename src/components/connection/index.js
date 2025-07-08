@@ -14,13 +14,13 @@ export default function ConnectPage() {
   }, []);
 
   const userId = user?.id;
-
+  const API_URL = "http://localhost:5000"; 
   // Fetch pending invitations
   useEffect(() => {
     if (!userId) return;
     const fetchInvitations = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/connectionroute/pending/${userId}`);
+        const response = await fetch(`${API_URL}/api/connectionroute/pending/${userId}`);
         if (!response.ok) throw new Error("Failed to fetch invitations");
         const data = await response.json();
         setInvitations(data);
@@ -36,7 +36,7 @@ export default function ConnectPage() {
     if (!userId) return;
     const fetchSuggestedPeople = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/connectionroute/suggested/${userId}`);
+        const response = await fetch(`${API_URL}/api/connectionroute/suggested/${userId}`);
         if (!response.ok) throw new Error("Failed to fetch suggested users");
         const data = await response.json();
         setSuggestedPeople(data);
@@ -50,7 +50,7 @@ export default function ConnectPage() {
   // Accept invitation
   const handleAccept = async (connectionId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/connectionroute/connections/${connectionId}/accept`, {
+      const response = await fetch(`${API_URL}/api/connectionroute/connections/${connectionId}/accept`, {
         method: "PUT",
       });
       if (!response.ok) throw new Error("Failed to accept request");
@@ -64,7 +64,7 @@ export default function ConnectPage() {
   const handleConnect = async (receiverId) => {
     if (!userId) return;
     try {
-      const response = await fetch("http://localhost:5000/api/connectionroute/connect", {
+      const response = await fetch(`${API_URL}/api/connectionroute/connect`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function ConnectPage() {
   // Reject invitation
   const handleReject = async (connectionId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/connectionroute/connections/${connectionId}/reject`, {
+      const response = await fetch(`${API_URL}/api/connectionroute/connections/${connectionId}/reject`, {
         method: "PUT",
       });
       if (!response.ok) throw new Error("Failed to reject request");

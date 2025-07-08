@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 function SearchUsers({ onSelectUser }) {
     const [query, setQuery] = useState(""); // User's search input
     const [users, setUsers] = useState([]); // List of matching users
-
+    const API_URL = "http://localhost:5000"; 
     useEffect(() => {
         if (query.length < 2) {
             setUsers([]);
@@ -11,7 +11,7 @@ function SearchUsers({ onSelectUser }) {
         }
 
         // Fetch users from the backend using POST method
-        fetch('http://localhost:5000/api/chat/search', {
+        fetch(`${API_URL}/api/chat/search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

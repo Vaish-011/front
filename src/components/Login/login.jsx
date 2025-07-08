@@ -10,7 +10,7 @@ function Login() {
     const [action, setAction] = useState('');
     const [loginData, setLoginData] = useState({ email: '', password: '' });
     const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
-
+    const API_URL = "http://localhost:5000"; 
     const createAccountLink = () => {
         setAction(' active');
     };
@@ -22,7 +22,7 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:5000/api/auth/login", {
+            const response = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(loginData),
@@ -49,7 +49,7 @@ function Login() {
     const handleRegister = async (e) => {
         e.preventDefault();  // Fix: Prevent form submission from reloading
         try {
-            const response = await fetch('http://localhost:5000/api/auth/register', {
+            const response = await fetch(`${API_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(registerData),

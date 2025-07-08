@@ -6,6 +6,7 @@ export default function ConnectionPage() {
   const [suggestedPeople, setSuggestedPeople] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const [connections, setConnections] = useState([]);
+  const API_URL = "http://localhost:5000"; 
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -20,9 +21,9 @@ export default function ConnectionPage() {
     const fetchData = async () => {
       try {
         const [invResponse, sugResponse, connResponse] = await Promise.all([
-          fetch(`http://localhost:5000/api/connectionroute/pending/${userId}`),
-          fetch(`http://localhost:5000/api/connectionroute/suggested/${userId}`),
-          fetch(`http://localhost:5000/api/connectionroute/connections/${userId}`),
+          fetch(`${API_URL}/api/connectionroute/pending/${userId}`),
+          fetch(`${API_URL}/api/connectionroute/suggested/${userId}`),
+          fetch(`${API_URL}/api/connectionroute/connections/${userId}`),
         ]);
 
         if (!invResponse.ok || !sugResponse.ok || !connResponse.ok) {

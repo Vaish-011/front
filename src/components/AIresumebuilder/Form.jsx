@@ -1,6 +1,9 @@
 import React from 'react';
 import './Form.css';
 
+
+const API_URL = "http://localhost:5000"; 
+
 const Form = ({
     formData,
     handleChange,
@@ -17,7 +20,7 @@ const Form = ({
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/resume/submit-form', {
+            const response = await fetch(`${API_URL}/api/resume/submit-form`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

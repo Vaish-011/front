@@ -2,16 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
-const invitations = [
-  { id: 1, name: "Ahamad Heranja", role: "Automobile Engineer", time: "3 weeks ago" },
-  { id: 2, name: "ABHIJIT Kumar Rai", role: "Marwadi University", time: "4 weeks ago" },
-];
+
 
 export default function InvitationPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [invitations, setInvitations] = useState([]);
-  
+  const API_URL = "http://localhost:5000"; 
+
   useEffect(() => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
       if (storedUser) setUser(storedUser);
@@ -24,7 +22,7 @@ useEffect(() => {
   if (!userId) return;
   const fetchInvitations = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/connectionroute/pending/${userId}`);
+      const response = await fetch(`${API_URL}/api/connectionroute/pending/${userId}`);
       if (!response.ok) throw new Error("Failed to fetch invitations");
       const data = await response.json();
       setInvitations(data);
@@ -39,7 +37,7 @@ useEffect(() => {
 // Accept invitation
 const handleAccept = async (connectionId) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/connectionroute/connections/${connectionId}/accept`, {
+    const response = await fetch(`${API_URL}/api/connectionroute/connections/${connectionId}/accept`, {
       method: "PUT",
     });
     if (!response.ok) throw new Error("Failed to accept request");
@@ -52,7 +50,7 @@ const handleAccept = async (connectionId) => {
 // Reject invitation
 const handleReject = async (connectionId) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/connectionroute/connections/${connectionId}/reject`, {
+    const response = await fetch(`${API_URL}/api/connectionroute/connections/${connectionId}/reject`, {
       method: "PUT",
     });
     if (!response.ok) throw new Error("Failed to reject request");

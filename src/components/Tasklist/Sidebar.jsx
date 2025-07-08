@@ -8,7 +8,7 @@ import './sidebar.css';
 function Sidebar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
-
+  
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };

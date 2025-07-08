@@ -14,7 +14,6 @@ const Home = () => {
         
         const token = localStorage.getItem("token");
         if (!token) {
-            // If not, redirect to login page
             navigate("/login");
             
         }

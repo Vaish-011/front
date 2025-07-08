@@ -11,12 +11,13 @@ function Feed() {
   const [stats, setStats] = useState({});
   const [comments, setComments] = useState({});
   const [newComment, setNewComment] = useState({});
+  const API_URL = "http://localhost:5000"; 
   const userId = JSON.parse(localStorage.getItem("user"))?.id;
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/posts/post");
+        const res = await axios.get(`${API_URL}/api/posts/post`);
         const reversed = res.data.reverse();
         setPosts(reversed);
 
@@ -35,7 +36,7 @@ function Feed() {
   const fetchStats = async (postId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/posts/post/${postId}/stats`,
+        `${API_URL}/api/posts/post/${postId}/stats`,
         { params: { userId } }
       );
       setStats((prev) => ({ ...prev, [postId]: res.data }));
@@ -47,7 +48,7 @@ function Feed() {
   const fetchComments = async (postId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/posts/comments/${postId}`
+        `${API_URL}/api/posts/comments/${postId}`
       );
       setComments((prev) => ({ ...prev, [postId]: res.data }));
     } catch (err) {
@@ -57,12 +58,12 @@ function Feed() {
 
   const handleLike = async (postId) => {
     try {
-      await axios.post(`http://localhost:5000/api/posts/post/${postId}/like`, {
+      await axios.post(`${API_URL}/api/posts/post/${postId}/like`, {
         userId,
       });
 
       const res = await axios.get(
-        `http://localhost:5000/api/posts/post/${postId}/stats`,
+        `${API_URL}/api/posts/post/${postId}/stats`,
         { params: { userId } }
       );
 
@@ -80,7 +81,7 @@ function Feed() {
     if (!content) return;
 
     try {
-      await axios.post(`http://localhost:5000/api/posts/post/${postId}/comment`, {
+      await axios.post(`${API_URL}/api/posts/post/${postId}/comment`, {
         userId,
         content,
       });
@@ -152,12 +153,12 @@ function Feed() {
 
             {post.photo && (
               <a
-                href={`http://localhost:5000/${post.photo}`}
+                href={`${API_URL}/${post.photo}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <img
-                  src={`http://localhost:5000/${post.photo}`}
+                  src={`${API_URL}/${post.photo}`}
                   alt="post"
                   style={styles.postImage}
                 />
@@ -167,7 +168,7 @@ function Feed() {
             {post.video && (
               <video controls style={styles.postVideo}>
                 <source
-                  src={`http://localhost:5000/${post.video}`}
+                  src={`${API_URL}/${post.video}`}
                   type="video/mp4"
                 />
                 Your browser does not support the video tag.
@@ -176,7 +177,7 @@ function Feed() {
 
             {post.article && (
               <a
-                href={`http://localhost:5000/${post.article}`}
+                href={`${API_URL}/${post.article}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -211,10 +212,10 @@ function Feed() {
                 postContent={post.content}
                 postAuthor={post.name}
                 postTime={new Date(post.createdAt).toLocaleString()}
-                postImage={post.photo ? `http://localhost:5000/${post.photo}` : ""}
-                postVideo={post.video ? `http://localhost:5000/${post.video}` : ""}
+                postImage={post.photo ? `${API_URL}/${post.photo}` : ""}
+                postVideo={post.video ? `${API_URL}/${post.video}` : ""}
                 postArticleLink={
-                  post.article ? `http://localhost:5000/${post.article}` : ""
+                  post.article ? `${API_URL}/${post.article}` : ""
                 }
                 onBookmarkToggle={() => {}}
               />

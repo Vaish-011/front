@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/chat";
+const API_URI = "http://localhost:5000"; 
+const API_URL = `${API_URI}/api/chat`;
 
 const Chat = () => {
     const [searchQuery, setSearchQuery] = useState("");

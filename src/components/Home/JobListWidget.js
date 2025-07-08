@@ -6,11 +6,11 @@ import styles from "./styles/joblistview.module.css";
 const JobListWidget = () => {
     const [jobs, setJobs] = useState([]);
     const navigate = useNavigate();
-
+    const API_URL = "http://localhost:5000"; 
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/jobs/");
+                const response = await axios.get(`${API_URL}/api/jobs/`);
                 setJobs(response.data);
             } catch (error) {
                 console.error("Error fetching jobs:", error);

@@ -8,11 +8,11 @@ const JobList = () => {
     const [jobs, setJobs] = useState([]);
     const navigate = useNavigate();
     const [user , setUser] = useState(null);
-
+    const API_URL = "http://localhost:5000";
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/jobs/");
+                const response = await axios.get(`${API_URL}/api/jobs/`);
                 setJobs(response.data);
             } catch (error) {
                 console.error("Error fetching jobs:", error);
@@ -28,7 +28,7 @@ const JobList = () => {
 
     const handleDelete = async (jobId) => {
         try{
-            await axios.delete(`http://localhost:5000/api/jobs/delete/${jobId}`);
+            await axios.delete(`${API_URL}/api/jobs/delete/${jobId}`);
             setJobs(jobs.filter((job) => job.id !== jobId ));
             // alert("Job deleted successfully");
         }

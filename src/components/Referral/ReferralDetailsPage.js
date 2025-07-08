@@ -10,11 +10,11 @@ const ReferralDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [accepting, setAccepting] = useState(false);
-
+  const API_URL = "http://localhost:5000";
   useEffect(() => {
     const fetchReferralData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/reviewReferralRequest/referral-request/${applicant_id}/${job_id}`);
+        const res = await axios.get(`${API_URL}/api/reviewReferralRequest/referral-request/${applicant_id}/${job_id}`);
         setReferralData(res.data);
       } catch (err) {
         setError('Could not fetch referral data.');
@@ -30,7 +30,7 @@ const ReferralDetailsPage = () => {
   const handleAcceptReferral = async () => {
     setAccepting(true);
     try {
-      const res = await axios.put('http://localhost:5000/api/referralRequest/accept', {
+      const res = await axios.put(`${API_URL}/api/referralRequest/accept`, {
         user_id: applicant_id,
         job_id: job_id,
       });
@@ -61,7 +61,7 @@ const ReferralDetailsPage = () => {
         <p><strong>Submitted on:</strong> {new Date(referralData.created_at).toLocaleString()}</p>
         <p>
           <strong>Resume:</strong>{' '}
-          <a href={`http://localhost:5000/${referralData.resume}`} target="_blank" rel="noopener noreferrer">View Resume</a>
+          <a href={`${API_URL}/${referralData.resume}`} target="_blank" rel="noopener noreferrer">View Resume</a>
         </p>
       </div>
 

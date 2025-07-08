@@ -4,6 +4,7 @@ import styles from './styles/referral.module.css';
 import { useNavigate, useParams } from "react-router-dom";
 
 const RequestReferralForm = ({closeModal , handleReferralSubmit }) => {
+    const API_URL = "http://localhost:5000"; 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -50,7 +51,7 @@ const RequestReferralForm = ({closeModal , handleReferralSubmit }) => {
         console.log("jobId:", jobId);
         console.log("userId:", userId);
         try {
-            const response = await axios.post("http://localhost:5000/api/referralRequest/request", formDataToSend, {
+            const response = await axios.post(`${API_URL}/api/referralRequest/request`, formDataToSend, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
             if (response.status === 200) {

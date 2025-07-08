@@ -7,6 +7,7 @@ const Post = () => {
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState(null);
     const [token, setToken] = useState("");
+    const API_URL = "http://localhost:5000"; 
     const [files, setFiles] = useState({
         photo: null,
         video: null,
@@ -31,7 +32,7 @@ const Post = () => {
     }, []);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/posts/post")
+        axios.get(`${API_URL}/api/posts/post`)
             .then(response => setPosts(response.data))
             .catch(error => console.error("Error fetching posts:", error));
     }, []);
@@ -68,14 +69,14 @@ const Post = () => {
         }
 
         try {
-            await axios.post("http://localhost:5000/api/posts/post", formData, {
+            await axios.post(`${API_URL}/api/posts/post`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`,
                 },
             });
             alert("Added post");
-            const response = await axios.get("http://localhost:5000/api/posts/post");
+            const response = await axios.get(`${API_URL}/api/posts/post`);
             setPosts(response.data);
             setContent("");
             setFiles({ photo: null, video: null, article: null, event: null });

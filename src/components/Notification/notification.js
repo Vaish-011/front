@@ -7,6 +7,7 @@ const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [user, setUser] = useState(null);
     const [token, setToken] = useState("");
+    const API_URL = "http://localhost:5000"; 
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -25,13 +26,13 @@ const Notifications = () => {
         const fetchNotifications = async () => {
             try {
                 // Fetch pending connection requests
-                const pendingRes = await axios.get(`http://localhost:5000/api/notifications/notifications/${user.id}/pending`);
+                const pendingRes = await axios.get(`${API_URL}/api/notifications/notifications/${user.id}/pending`);
     
                 // Fetch accepted connection notifications
-                const acceptedRes = await axios.get(`http://localhost:5000/api/notifications/notifications/${user.id}/accepted`);
+                const acceptedRes = await axios.get(`${API_URL}/api/notifications/notifications/${user.id}/accepted`);
                 
                 // Fetch post notifications
-                const postRes = await axios.get(`http://localhost:5000/api/notifications/notifications/${user.id}/posts`);
+                const postRes = await axios.get(`${API_URL}/api/notifications/notifications/${user.id}/posts`);
                 
                 // Combine both notifications
                 const allNotifications = [...pendingRes.data, ...acceptedRes.data , ...postRes.data];

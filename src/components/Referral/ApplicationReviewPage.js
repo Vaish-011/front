@@ -10,6 +10,7 @@ const ApplicationReviewPage = () => {
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+   const API_URL = "http://localhost:5000"; 
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -27,7 +28,7 @@ const ApplicationReviewPage = () => {
             const fetchApplications = async () => {
                 try {
                     const response = await axios.get(
-                        `http://localhost:5000/api/applicationReview/applicants/${user.id}`
+                        `${API_URL}/api/applicationReview/applicants/${user.id}`
                     );
                     // Group the applications by company and job title
                     const grouped = response.data.reduce((acc, app) => {

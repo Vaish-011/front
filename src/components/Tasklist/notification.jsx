@@ -10,7 +10,7 @@ function NotificationComponent() {
     const [notifications, setNotifications] = useState([]);
     const [notifiedTasks, setNotifiedTasks] = useState(new Set());
     const [permissionGranted, setPermissionGranted] = useState(Notification.permission === "granted");
-
+    const API_URL = "http://localhost:5000"; 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
         const storedToken = localStorage.getItem("token");
@@ -69,7 +69,7 @@ function NotificationComponent() {
             }
             console.log("Client ID:", clientId);
 
-            const response = await fetch(`http://localhost:5000/api/tasks/task/notifications/${clientId}`);
+            const response = await fetch(`${API_URL}/api/tasks/task/notifications/${clientId}`);
             if (!response.ok) throw new Error("Failed to fetch notifications");
 
             const data = await response.json();

@@ -7,11 +7,11 @@ const ApplicationPage = () => {
     const {jobId} = useParams();
     const [applications , setApplications] = useState([]);
     const [selectedApplicant , setSelectedApplicant] = useState(null);
-
+    const API_URL = "http://localhost:5000";
     useEffect(() => {
         const fetchApplications = async () => {
             try{
-                const response = await axios.get(`http://localhost:5000/api/application/job${jobId}`);
+                const response = await axios.get(`${API_URL}/api/application/job${jobId}`);
                 setApplications(response.data);
             }
             catch(error){
