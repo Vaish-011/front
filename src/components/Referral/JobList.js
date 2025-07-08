@@ -8,7 +8,7 @@ const JobList = () => {
     const [jobs, setJobs] = useState([]);
     const navigate = useNavigate();
     const [user , setUser] = useState(null);
-    const API_URL = "http://localhost:5000";
+    const API_URL = "https://connectbackend-p4db.onrender.com";
     useEffect(() => {
         const fetchJobs = async () => {
             try {

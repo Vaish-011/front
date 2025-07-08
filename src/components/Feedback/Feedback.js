@@ -8,7 +8,7 @@ const Feedback = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState("");
   const [feedbackList, setFeedbackList] = useState([]); // Store all feedbacks
-  const API_URL = "http://localhost:5000"; 
+  const API_URL = "https://connectbackend-p4db.onrender.com"; 
   useEffect(() => {
     
     const storedUser = JSON.parse(localStorage.getItem("user"));

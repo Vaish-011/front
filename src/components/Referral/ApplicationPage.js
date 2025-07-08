@@ -7,7 +7,7 @@ const ApplicationPage = () => {
     const {jobId} = useParams();
     const [applications , setApplications] = useState([]);
     const [selectedApplicant , setSelectedApplicant] = useState(null);
-    const API_URL = "http://localhost:5000";
+    const API_URL = "https://connectbackend-p4db.onrender.com";
     useEffect(() => {
         const fetchApplications = async () => {
             try{
@@ -51,13 +51,13 @@ const ApplicationPage = () => {
                         {selectedApplicant.resume && (
                             <p>
                                 <strong>Resume:</strong>
-                                <a href={`http://localhost:5000/uploads/${selectedApplicant.resume}`} target="_blank" rel="noopener noreferrer">Download Resume</a>
+                                <a href={`https://connectbackend-p4db.onrender.com/uploads/${selectedApplicant.resume}`} target="_blank" rel="noopener noreferrer">Download Resume</a>
                             </p>
                         )}
                         {selectedApplicant.certifications && (
                             <p>
                                 <strong>Certifications:</strong>
-                                <a href={`http://localhost:5000/uploads/${selectedApplicant.certifications}`} target="_blank" rel="noopener noreferrer">Download Certifications</a>
+                                <a href={`https://connectbackend-p4db.onrender.com/uploads/${selectedApplicant.certifications}`} target="_blank" rel="noopener noreferrer">Download Certifications</a>
                             </p>
                         )}
                         <button className={styles.closeButton} onClick={() => setSelectedApplicant(null)}>Close</button>

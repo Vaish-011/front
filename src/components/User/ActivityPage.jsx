@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function ActivityPage() {
-  const API_BASE = "http://localhost:5000/api/posts";
-  const FILE_BASE = "http://localhost:5000";
+  const API_BASE = "https://connectbackend-p4db.onrender.com/api/posts";
+  const FILE_BASE = "https://connectbackend-p4db.onrender.com";
   const [posts, setPosts] = useState([]);
   const [userId, setUserId] = useState(null);
 

@@ -6,7 +6,7 @@ import './TodaysTasks.css';
 function CompletedTasks() {
   const [tasks, setTasks] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
-  const API_URL = "http://localhost:5000"; 
+  const API_URL = "https://connectbackend-p4db.onrender.com"; 
 
     useEffect(() => {
         if (user && user.id) {

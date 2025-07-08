@@ -6,7 +6,7 @@ export default function ConnectionPage() {
   const [suggestedPeople, setSuggestedPeople] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const [connections, setConnections] = useState([]);
-  const API_URL = "http://localhost:5000"; 
+  const API_URL = "https://connectbackend-p4db.onrender.com"; 
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));

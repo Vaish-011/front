@@ -6,7 +6,7 @@ import styles from "./styles/joblistview.module.css";
 const JobListWidget = () => {
     const [jobs, setJobs] = useState([]);
     const navigate = useNavigate();
-    const API_URL = "http://localhost:5000"; 
+    const API_URL = "https://connectbackend-p4db.onrender.com"; 
     useEffect(() => {
         const fetchJobs = async () => {
             try {
