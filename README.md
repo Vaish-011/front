@@ -5,6 +5,10 @@
 
 ---
 
+# Deployed Links
+**Frontend** - https://frontend-6a6w.onrender.com/
+**Backend** - https://connectbackend-p4db.onrender.com
+
 ## 🌟 Features
 
 - 🌐 **Professional Profiles**  
